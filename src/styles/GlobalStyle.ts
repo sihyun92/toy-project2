@@ -65,7 +65,7 @@ const GlobalStyle = createGlobalStyle`
     border: none;
     outline: none;
     background: ${(props) => props.theme.bgColor};
-    color: ${(props) => props.theme.colors};
+    color: ${(props) => props.theme.textColor};
   }
 `;
 

@@ -4,6 +4,7 @@ export const lightTheme: DefaultTheme = {
   bgColor: "#fff",
   textColor: "#000",
   borderColor: "#000",
+  headerColor: "#000",
   colors: {
     black: "#000",
     coral: "coral",
@@ -12,9 +13,10 @@ export const lightTheme: DefaultTheme = {
 };
 
 export const darkTheme: DefaultTheme = {
-  bgColor: "#707070",
+  bgColor: "#000",
   textColor: "#fff",
   borderColor: "#fff",
+  headerColor: "#fff",
   colors: {
     black: "#000",
     coral: "coral",
