@@ -34,6 +34,8 @@ const GlobalStyle = createGlobalStyle`
     ::-webkit-scrollbar {
       display: none !important;
     }
+    background: ${(props) => props.theme.bgColor};
+    color: ${(props) => props.theme.colors};
   }
   ol, ul {
     list-style: none;
@@ -57,6 +59,13 @@ const GlobalStyle = createGlobalStyle`
   }
   * {
     box-sizing: inherit;
+  }
+  button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: ${(props) => props.theme.bgColor};
+    color: ${(props) => props.theme.colors};
   }
 `;
 

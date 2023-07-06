@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import { theme } from "../../styles/theme";
 
 interface IButtonProps {
   [rest: string]: any;
@@ -9,7 +8,7 @@ function Button({ ...rest }: IButtonProps) {
   return <StyledButton {...rest} />;
 }
 
-const StyledButton = styled.button<{ black?: boolean; red?: boolean }>`
+const StyledButton = styled.button<{ black?: boolean; }>`
   border: none;
   outline: none;
   cursor: pointer;
@@ -22,14 +21,8 @@ const StyledButton = styled.button<{ black?: boolean; red?: boolean }>`
   ${(rest) =>
     rest.black &&
     css`
-      background: ${theme.colors.black};
-      color: ${theme.colors.white};
-    `}
-  ${(rest) =>
-    rest.red &&
-    css`
-      background: #f00;
-      color: ${theme.colors.white};
+      background: black;
+      color: $white;
     `}
 `;
 
