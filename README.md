@@ -1,46 +1,268 @@
-# Getting Started with Create React App
+# KEEP
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# API 명세서
 
-## Available Scripts
+API 요청(Request) header에 아래 정보가 꼭 포함되어야 합니다.
 
-In the project directory, you can run:
+```json
+{
+  "content-type": "application/json"
+}
+```
 
-### `npm start`
+<hr />
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 소비 내역 작성(POST)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```curl
+curl http://52.78.195.183:3003/api/expenses \ -X 'POST'
+```
 
-### `npm test`
+### 요청 데이터 타입 및 예시
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```ts
+interface RequestBody {
+  amout: number;
+  userId: string;
+  category: string;
+  date: string;
+}
+```
 
-### `npm run build`
+```json
+{
+  "amount": 100,
+  "userId": "user123",
+  "category": "food",
+  "date": "2023-07-04T10:30:00.000Z"
+}
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 응답 데이터 타입 및 예시
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```ts
+interface ResponseValue {
+  message: string;
+}
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```json
+{
+  "message": "Expense created successfully"
+}
+```
 
-### `npm run eject`
+<hr />
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## 소비 품목 API(GET)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```curl
+curl http://52.78.195.183:3003/api/categories?userId={userID} \ -X 'GET'
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### 요청 데이터 타입 및 예시
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+없음
 
-## Learn More
+### 응답 데이터 타입 및 예시
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```ts
+type ResponseValue = [string];
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```json
+["food", "clothing", "electronics"]
+```
+
+<hr />
+
+## 검색어에 해당하는 소비 항목 및 금액 조회 API(GET)
+
+```curl
+curl http://52.78.195.183:3003/api/expenses/search?q={keyword}&userId={userId} \ -X 'GET'
+```
+
+### 요청 데이터 타입 및 예시
+
+없음
+
+### 응답 데이터 타입 및 예시
+
+```ts
+type ResponseValue = [
+  {
+    amout: number;
+    userId: string;
+    category: string;
+    date: string;
+  },
+];
+```
+
+```json
+[
+  {
+    "amount": 100,
+    "userId": "user123",
+    "category": "food",
+    "date": "2023-07-04T10:30:00.000Z"
+  },
+  {
+    "amount": 80,
+    "userId": "user456",
+    "category": "food",
+    "date": "2023-07-03T14:20:00.000Z"
+  }
+]
+```
+
+<hr />
+
+## 일별, 주별, 월별 소비 조회 API(GET)
+
+```curl
+curl http://52.78.195.183:3003/api/expenses/summary?period={period}&userId={userId} \ -X 'GET'
+
+period: daily, weekly, monthly
+```
+
+### 요청 데이터 타입 및 예시
+
+없음
+
+### 응답 데이터 타입 및 예시
+
+```ts
+type ResponseValue = [
+  {
+    _id: string;
+    totalAmout: number;
+  },
+];
+```
+
+```json
+[
+  {
+    "_id": "2023-07-04",
+    "totalAmount": 180
+  },
+  {
+    "_id": "2023-07-03",
+    "totalAmount": 80
+  }
+]
+```
+
+<hr />
+
+## 소비 기록 수정 API(PUT)
+
+```curl
+curl http://52.78.195.183:3003/api/expenses/{id} \ -X 'PUT'
+
+id: 아이템 고유 id (추후 테스트 후 내용 수정 예정)
+```
+
+### 요청 데이터 타입 및 예시
+
+```ts
+type RequestBody = {
+  amout: number;
+  userId: string;
+  category: string;
+  date: string;
+};
+```
+
+### 응답 데이터 타입 및 예시
+
+```ts
+type ResponseValue = {
+  message: string;
+};
+```
+
+```json
+{
+  "message": "Expense updated successfully"
+}
+```
+
+<hr />
+
+## 소비 기록 삭제 API(DELETE)
+
+```curl
+curl http://52.78.195.183:3003/api/expenses/{id} \ -X 'DELETE'
+
+id: 아이템 고유 id (추후 테스트 후 내용 수정 예정)
+```
+
+### 요청 데이터 타입 및 예시
+
+없음
+
+### 응답 데이터 타입 및 예시
+
+```ts
+type ResponseValue = {
+  message: string;
+};
+```
+
+```json
+{
+  "message": "Expense deleted successfully"
+}
+```
+
+<hr />
+
+## 소비 달력 호출 API(GET)
+
+```curl
+curl http://52.78.195.183:3003/api/expenses/calendar?year=2023&month=7&userId={userId}\ -X 'GET'
+
+id: 아이템 고유 id (추후 테스트 후 내용 수정 예정)
+```
+
+### 요청 데이터 타입 및 예시
+
+없음
+
+### 응답 데이터 타입 및 예시
+
+```ts
+type ResponseValue = {
+  [
+    {
+      amout: number;
+      userId: string;
+      category: string;
+      date: string;
+    },
+  ];
+};
+```
+
+```json
+{
+  "1": [
+    {
+      "amount": 100,
+      "userId": "user123",
+      "category": "food",
+      "date": "2023-07-01T10:30:00.000Z"
+    }
+  ],
+  "4": [
+    {
+      "amount": 80,
+      "userId": "user456",
+      "category": "food",
+      "date": "2023-07-04T14:20:00.000Z"
+    }
+  ]
+}
+```
