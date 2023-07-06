@@ -20,7 +20,7 @@ function Header({ isLight, onToggleDark }: IHeaderProps) {
 const HeaderContainer = styled.header`
   width: 100%;
   height: 70px;
-  background: ${props => props.theme.bgColor};
+  background: ${props => props.theme.headerColor};
   display: flex;
   justify-content: center;
   align-items: center;
