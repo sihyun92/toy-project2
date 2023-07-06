@@ -35,7 +35,7 @@ const GlobalStyle = createGlobalStyle`
       display: none !important;
     }
     background: ${(props) => props.theme.bgColor};
-    color: ${(props) => props.theme.colors};
+    color: ${(props) => props.theme.textColor};
   }
   ol, ul {
     list-style: none;
