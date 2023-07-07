@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 interface IButtonProps {
   [rest: string]: any;
@@ -8,22 +8,16 @@ function Button({ ...rest }: IButtonProps) {
   return <StyledButton {...rest} />;
 }
 
-const StyledButton = styled.button<{ black?: boolean; }>`
+const StyledButton = styled.button`
   border: none;
   outline: none;
   cursor: pointer;
   border-radius: 5px;
-  background: #707070;
-  color: #fff;
+  background: ${(props) => props.theme.buttonColor};
+  color: ${(props) => props.theme.buttonTextColor};
   width: 200px;
   height: 40px;
   font-size: 20px;
-  ${(rest) =>
-    rest.black &&
-    css`
-      background: black;
-      color: $white;
-    `}
 `;
 
 export default Button;

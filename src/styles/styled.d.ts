@@ -6,10 +6,8 @@ declare module "styled-components" {
     textColor: string;
     borderColor: string;
     headerColor: string;
-    colors: {
-      white: string;
-      black: string;
-      coral: string;
-    };
+    buttonColor: string;
+    buttonTextColor: string;
+    hoverColor: string;
   }
 }

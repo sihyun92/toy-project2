@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import Button from "./common/Button";
+import AddConsume from "./add/AddConsume";
 import CalendarSection from "./common/CalendarSection";
 
 function Main() {
   return (
     <MainContainer>
-      <Button black="true">버튼</Button>
-      <CalendarSection></CalendarSection>
+      <AddConsume />
+      <CalendarSection />
     </MainContainer>
   );
 }
