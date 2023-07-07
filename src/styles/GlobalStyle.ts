@@ -34,6 +34,7 @@ const GlobalStyle = createGlobalStyle`
     ::-webkit-scrollbar {
       display: none !important;
     }
+    transition: all 0.2s ease-in-out;
     background: ${(props) => props.theme.bgColor};
     color: ${(props) => props.theme.textColor};
   }
