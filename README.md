@@ -11,36 +11,36 @@
       </a>
     </td>
     <td align="center">
-      <a href="https://github.com/1017yu">
-        <img src="https://avatars.githubusercontent.com/u/83483378?v=4" width="100px;" alt="Kled"/><br />
-        <sub><b>유희태</b><br></sub>
+      <a href="https://github.com/Eunjii">
+        <img src="https://avatars.githubusercontent.com/u/51252978?v=4" width="100px;" alt="Eunjii"/><br />
+        <sub><b>이은지</b><br></sub>
       </a>
     </td>
     <td align="center">
-      <a href="https://github.com/DICEPT">
-        <img src="https://avatars.githubusercontent.com/u/106785596?v=4" width="100px;" alt="dev-junehee"/><br />
-        <sub><b>박철민</b><br></sub>
+      <a href="https://github.com/doitidey">
+        <img src="https://avatars.githubusercontent.com/u/128357188?v=4" width="100px;" alt="Lim Seung-Yi"/><br />
+        <sub><b>임승이</b><br></sub>
       </a>
     </td>
      <td align="center">
       <a href="https://github.com/cdm1263">
-        <img src="https://avatars.githubusercontent.com/u/122417731?v=4" width="100px;" alt="dev-junehee"/><br />
-        <sub><b>차동민</b><br></sub>
+        <img src="https://avatars.githubusercontent.com/u/128245462?v=4" width="100px;" alt="Bang Misun"/><br />
+        <sub><b>방미선</b><br></sub>
       </a>
     </td>
   </tr>
  <tr>
     <td align="center">
-        <sub><b>메인 페이지 </b><br></sub>
+        <sub><b>소비내역 추가, 소비내역 차트</b><br></sub>
     </td>
     <td align="center">
-        <sub><b>로그인, 회원가입 페이지</b><br></sub>
+        <sub><b>모달</b><br></sub>
     </td>
     <td align="center">
-        <sub><b>관리자 페이지</b><br></sub>
+        <sub><b>지출내역</b><br></sub>
     </td>
      <td align="center">
-        <sub><b>사용자 페이지</b><br></sub>
+        <sub><b>소비내역 조회</b><br></sub>
     </td>
   </tr>
 
