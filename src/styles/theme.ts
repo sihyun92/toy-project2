@@ -1,3 +1,6 @@
+// 여기에 색상을 전부 넣어서 다른곳에서 불러서 사용한다.
+// background: ${(props) => props.theme.bgColor};
+
 import { DefaultTheme } from "styled-components";
 
 export const lightTheme: DefaultTheme = {
