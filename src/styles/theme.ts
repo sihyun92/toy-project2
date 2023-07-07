@@ -1,15 +1,14 @@
 import { DefaultTheme } from "styled-components";
 
+// 추후 색상 변경
 export const lightTheme: DefaultTheme = {
   bgColor: "#fff",
   textColor: "#000",
   borderColor: "#000",
   headerColor: "#000",
-  colors: {
-    black: "#000",
-    coral: "coral",
-    white: "#fff",
-  },
+  buttonColor: "#000",
+  buttonTextColor: "#fff",
+  hoverColor: "#ccc",
 };
 
 export const darkTheme: DefaultTheme = {
@@ -17,9 +16,7 @@ export const darkTheme: DefaultTheme = {
   textColor: "#fff",
   borderColor: "#fff",
   headerColor: "#fff",
-  colors: {
-    black: "#000",
-    coral: "coral",
-    white: "#fff",
-  },
+  buttonColor: "#fff",
+  buttonTextColor: "#000",
+  hoverColor: "#ccc",
 };
