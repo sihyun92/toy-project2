@@ -1,8 +1,8 @@
 import { useCallback, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
-import ErrorPage from "./pages/ErrorPage";
-import MainPage from "./pages/MainPage";
+import ErrorPage from "./Pages/ErrorPage";
+import MainPage from "./Pages/MainPage";
 import GlobalStyle from "./styles/GlobalStyle";
 import { darkTheme, lightTheme } from "./styles/theme";
 

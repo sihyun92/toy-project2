@@ -115,8 +115,8 @@ const TransactionListTable = styled.table`
 `;
 
 const TransactionListTableHeader = styled.thead`
-  background-color: ${(props) => props.theme.colors.black};
-  color: ${(props) => props.theme.colors.white};
+  background-color: ${(props) => props.theme.bgColor};
+  color: ${(props) => props.theme.textColor};
 `;
 
 const HeaderItem = styled.th`
@@ -128,7 +128,7 @@ const TransactionListTableBody = styled.tbody``;
 
 const TransactionItem = styled.tr`
   &:nth-child(even) {
-    background-color: ${(props) => props.theme.colors.coral};
+    background-color: ${(props) => props.theme.bgColor};
   }
 `;
 
