@@ -1,6 +1,6 @@
 import client from "./client";
 
-const getCallandar = async(month: number, userId: string) => {
+const getCalendar = async(month: number, userId: string) => {
   
 	try{
 		const response = await client.get(`/api/expenses/calendar?year=2023&month=${month}&userId=${userId}`);
@@ -11,4 +11,4 @@ const getCallandar = async(month: number, userId: string) => {
   }
 }
 
-export { getCallandar }
+export { getCalendar }
