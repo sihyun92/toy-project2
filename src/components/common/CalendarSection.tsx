@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
-import { getCallandar } from "../../lib/api/getCallandar";
+import { getCalendar } from "../../lib/api/getCalendar";
 import Button from "./Button";
 
 
@@ -25,7 +25,7 @@ function CalendarSection() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getCallandar(nowMonth+1, 'team1');
+        const result = await getCalendar(nowMonth+1, 'team1');
         setMonthlyCharge(result);
         console.log('has been update')
       } catch (error) {
