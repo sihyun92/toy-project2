@@ -1,15 +1,17 @@
-import React, { FormEvent, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import ReactTimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
+import { postConsume } from "../../lib/api/consumeAPI";
+import { FiPlus, FiMinus, FiX } from "react-icons/fi";
 
-interface ModalProps {
+interface IAddModalProps {
   handleCloseModal: () => void;
 }
 
-function Modal({ handleCloseModal }: ModalProps) {
+function AddModal({ handleCloseModal }: IAddModalProps) {
   const [amount, setAmount] = useState<number>(0);
   const [userId, setUserId] = useState("");
   const [category, setCategory] = useState("");
@@ -17,15 +19,28 @@ function Modal({ handleCloseModal }: ModalProps) {
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
-  const onChange = (event: FormEvent) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target as HTMLInputElement;
-    if (name === "userId") {
+    if (name === "amount") {
+      setAmount(+event.target.value);
+    } else if (name === "userId") {
       setUserId(value);
     } else if (name === "category") {
       setCategory(value);
     }
   };
 
+  const handleConvert = (operator: any) => {
+    if (isNaN(amount)) {
+      setAmount(0);
+      return;
+    }
+    if (operator === "+") {
+      setAmount(Math.abs(amount));
+    } else if (operator === "-") {
+      setAmount(-Math.abs(amount));
+    }
+  };
   const handleInputClick = () => {
     setShowCalendar(true);
   };
@@ -39,6 +54,22 @@ function Modal({ handleCloseModal }: ModalProps) {
     setTime(value);
   };
 
+  const handleConfirm = () => {
+    const formattedDate = selectedDate.toISOString().slice(0, 10);
+    const formattedTime = time !== null ? time : "";
+
+    const date = formattedDate + (formattedTime ? " " + formattedTime : "");
+
+    postConsume({
+      amount,
+      userId,
+      category,
+      date,
+    });
+    handleCloseModal();
+    console.log(date);
+  };
+
   return (
     <ModalOverlay>
       <ModalWrapper>
@@ -46,42 +77,56 @@ function Modal({ handleCloseModal }: ModalProps) {
           <ModalHeader>
             <ModalTitle>내역 추가</ModalTitle>
             <ModalCloseButton onClick={handleCloseModal}>
-              &times;
+              <FiX />
             </ModalCloseButton>
           </ModalHeader>
-          <form>
-            <div>
-              <button>+</button>
-              <button>-</button>
-              <input
-                type="text"
+          <ModalForm onSubmit={handleConfirm}>
+            <ModalAmountWrap>
+              <button type="button" onClick={() => handleConvert("+")}>
+                <FiPlus />
+              </button>
+
+              <button type="button" onClick={() => handleConvert("-")}>
+                <FiMinus />
+              </button>
+
+              <ModalInputAmount
                 name="amount"
-                value={amount !== 0 ? `+${amount}` : ""}
-                onChange={() => {}}
+                value={amount}
+                onChange={onChange}
                 placeholder="금액"
+                required={true}
               />
-            </div>
-            <input
+              <span>원</span>
+            </ModalAmountWrap>
+            <ModalInput
               type="text"
               name="userId"
               value={userId}
               onChange={onChange}
               placeholder="이름"
+              required={true}
             />
-            <input
+            <ModalInput
               type="text"
               name="category"
               value={category}
               onChange={onChange}
               placeholder="카테고리"
+              required={true}
             />
-            <div>
-              <input
+            <ModalDateWrap>
+              <ModalInput
                 type="text"
                 name="date"
-                placeholder="날짜"
+                placeholder="날짜 및 시간"
                 onClick={handleInputClick}
-                value={selectedDate.toLocaleDateString()}
+                value={selectedDate.toLocaleString("ko-KR", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                })}
+                required={true}
               />
               {showCalendar && (
                 <Calendar
@@ -90,24 +135,25 @@ function Modal({ handleCloseModal }: ModalProps) {
                   onClickDay={handleDateChange}
                 />
               )}
-            </div>
+            </ModalDateWrap>
 
-            <div>
-              <ReactTimePicker
-                onChange={handleTimeChange}
-                value={time}
-                format="HH:mm"
-                disableClock={true}
-                clearIcon={null}
-              />
-            </div>
+            <ReactTimePicker
+              onChange={handleTimeChange}
+              value={time}
+              format="HH:mm"
+              disableClock={true}
+              clearIcon={null}
+              required={true}
+            />
             <ModalButtonContainer>
               <ModalButton type="button" onClick={handleCloseModal}>
                 취소
               </ModalButton>
-              <ModalButton type="submit">확인</ModalButton>
+              <ModalButton type="submit" onClick={handleConfirm}>
+                확인
+              </ModalButton>
             </ModalButtonContainer>
-          </form>
+          </ModalForm>
         </ModalContent>
       </ModalWrapper>
     </ModalOverlay>
@@ -137,20 +183,44 @@ const ModalWrapper = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #fff;
-  padding: 30px;
+  padding: 2rem;
   z-index: 99999;
 `;
 
 const ModalContent = styled.div`
   position: relative;
 `;
-
+const ModalForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+`;
 const ModalCloseButton = styled.button`
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: -5px;
+  right: -10px;
+  font-size: 2rem;
+`;
+const ModalAmountWrap = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+`;
+const ModalInput = styled.input`
+  height: 30px;
+  border-style: none;
+  border-bottom: 1px solid #000;
+  font-size: 1rem;
+`;
+const ModalInputAmount = styled.input`
+  height: 30px;
+  border-style: none;
+  border-bottom: 1px solid #000;
+  font-size: 1.5rem;
+  text-align: right;
 `;
 
+const ModalDateWrap = styled.div``;
 const ModalButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -161,4 +231,4 @@ const ModalButton = styled.button`
   margin-left: 10px;
 `;
 
-export default Modal;
+export default AddModal;

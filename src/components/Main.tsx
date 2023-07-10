@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import CalendarSection from "./common/CalendarSection";
 import { useState } from "react";
-import Modal from "../components/modal/Modal";
+import AddModal from "./modal/AddModal";
 import Button from "./common/Button";
 
 function Main() {
@@ -21,7 +21,7 @@ function Main() {
         <span>+</span>
         <span>내역 추가</span>
       </Button>
-      {openModal && <Modal handleCloseModal={handleCloseModal} />}
+      {openModal && <AddModal handleCloseModal={handleCloseModal} />}
     </MainContainer>
   );
 }
