@@ -95,7 +95,7 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
                 value={amount}
                 onChange={onChange}
                 placeholder="금액"
-                required={true}
+                required
               />
               <span>원</span>
             </ModalAmountWrap>
@@ -105,7 +105,7 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
               value={userId}
               onChange={onChange}
               placeholder="이름"
-              required={true}
+              required
             />
             <ModalInput
               type="text"
@@ -113,7 +113,7 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
               value={category}
               onChange={onChange}
               placeholder="카테고리"
-              required={true}
+              required
             />
             <ModalDateWrap>
               <ModalInput
@@ -126,7 +126,7 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
                   month: "2-digit",
                   day: "2-digit",
                 })}
-                required={true}
+                required
               />
               {showCalendar && (
                 <Calendar
