@@ -22,7 +22,9 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target as HTMLInputElement;
     if (name === "amount") {
-      setAmount(+event.target.value);
+      if (!isNaN(Number(value))) {
+        setAmount(+value);
+      }
     } else if (name === "userId") {
       setUserId(value);
     } else if (name === "category") {
@@ -57,8 +59,17 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
   const handleConfirm = () => {
     const formattedDate = selectedDate.toISOString().slice(0, 10);
     const formattedTime = time !== null ? time : "";
-
     const date = formattedDate + (formattedTime ? " " + formattedTime : "");
+
+    if (
+      amount === 0 ||
+      userId === "" ||
+      category === "" ||
+      formattedTime === ""
+    ) {
+      alert("빈칸을 모두 입력해주세요");
+      return;
+    }
 
     postConsume({
       amount,
@@ -67,7 +78,6 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
       date,
     });
     handleCloseModal();
-    console.log(date);
   };
 
   return (
