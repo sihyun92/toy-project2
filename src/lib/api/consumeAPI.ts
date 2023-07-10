@@ -9,11 +9,11 @@ interface IPostExpenses {
 }
 export const postConsume = ({
   amount,
+  userId,
   category,
   date,
-  userId,
 }: IPostExpenses) => {
-  client.post("/api/expenses", { amount, category, date, userId });
+  client.post("/api/expenses", { amount, userId, category, date });
 };
 
 // 소비 품목 API(GET)
