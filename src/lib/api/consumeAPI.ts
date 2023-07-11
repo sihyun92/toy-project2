@@ -7,13 +7,20 @@ interface IPostExpenses {
   category: string;
   date: string;
 }
-export const postConsume = ({
+export const postConsume = async ({
   amount,
+  userId,
   category,
   date,
-  userId,
 }: IPostExpenses) => {
-  client.post("/api/expenses", { amount, category, date, userId });
+  const result = await client.post("/api/expenses", {
+    amount,
+    userId,
+    category,
+    date,
+  });
+  console.log(result.data);
+  return result.data;
 };
 
 // 소비 품목 API(GET)
@@ -22,6 +29,7 @@ interface IGetConsume {
 }
 export const getConsume = ({ userId }: IGetConsume) => {
   client.get(`api/categories?userId=${userId}`);
+  
 };
 
 // 검색어에 해당하는 소비 항목 및 금액 조회 API(GET)
