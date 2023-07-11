@@ -2,89 +2,51 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
-import { getCalendar } from "../../lib/api/getCalendar";
-import Button from "./Button";
+import { getCalendarConsume } from "../../lib/api/consumeAPI";
+import { totalAmout } from "./totalAmout";
 
 
-interface IExpense {
-  _id: string;
-  amount: number;
-  userId: string;
-  category: string;
-  date: string;
-}
-
-function CalendarSection() {
-  const [toggleBtn, setToggleBtn] = useState(true);
+export function CalendarView() {
   const [monthlyCharge, setMonthlyCharge] = useState([]);
   const [value, setValue] = useState(new Date());
 
   const nowMonth = value.getMonth();
+  const nowYear = value.getFullYear();
 
   //api호출
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getCalendar(nowMonth+1, 'team1');
+        const result = await getCalendarConsume({year: nowYear, month: nowMonth+1, userId: 'team1'});
         setMonthlyCharge(result);
-        console.log('has been update')
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
-  }, [value, nowMonth]);
+  }, [value, nowYear, nowMonth]);
 
-  //호출값의 amout가 양수인지 음수인지 확인하고 각각 합을 return
-  const totalAmout = (a:IExpense[]) => {
-    let totalAmountPosi = 0;
-    let totalAmountNeg = 0;
-    for (let i = 0; i < a.length; i++) {
-      a[i].amount > 0 ? totalAmountPosi += a[i].amount : totalAmountNeg += a[i].amount
-    }
-    return [totalAmountNeg, totalAmountPosi];
-  }
-
-
-  return (
-    <>
-      <h2>지출 내역</h2>
-      <Button onClick={() => setToggleBtn(true)}>월별</Button>
-      <Button onClick={() => setToggleBtn(false)}>주간별</Button>
-      <Container>
-        {toggleBtn === true ? (
-          <Calendar 
-          onClickMonth={(value, event) => alert( value)}
-          showNeighboringMonth={false}
-          value={value}
-          onDrillUp={({ activeStartDate, view }) => alert(`'Drilled up to: ', ${view}`)}
-          onChange={(value: any) => setValue(value)}
-          tileContent	={({ date, view }: { date: Date; view: string }) => 
-            view === 'month' && Object.keys(monthlyCharge).map(a => a === date.getDate().toString() ?
-              <>
-                {totalAmout(monthlyCharge[Number(a)])[0]!==0? <p className="amout-text">{totalAmout(monthlyCharge[Number(a)])[0].toLocaleString()}</p> : null}
-                {totalAmout(monthlyCharge[Number(a)])[1]!==0? <p className="amout-text posi">{'+'+totalAmout(monthlyCharge[Number(a)])[1].toLocaleString()}</p> : null}
-              </>
-              : null)}
-           />
-        ) : (
-          <div>주간리스트 ,, 캘린더 마무리 후 추가 예정</div>
-        )}
-      </Container>
-    </>
-  );
+  return(
+    <CalendarContainer>
+      <Calendar
+      value={value}
+      onActiveStartDateChange={({ activeStartDate }: any) => setValue(activeStartDate)}
+      showNeighboringMonth={false}
+      onChange={(value: any) => setValue(value)}
+      tileContent={({ date, view }: { date: Date; view: string }) => 
+        view === 'month' && Object.keys(monthlyCharge).map(a => a === date.getDate().toString() ?
+          <>
+            {totalAmout(monthlyCharge[Number(a)])[0]!==0? <p className="amout-text">{totalAmout(monthlyCharge[Number(a)])[0].toLocaleString()}</p> : null}
+            {totalAmout(monthlyCharge[Number(a)])[1]!==0? <p className="amout-text posi">{'+'+totalAmout(monthlyCharge[Number(a)])[1].toLocaleString()}</p> : null}
+          </>
+          : null)}
+        />
+    </CalendarContainer>
+  )
 }
 
 
-const Container = styled.div`
-width : 30rem;
-min-height: 32rem;
-display: flex;
-align-items: center;
-justify-content: center;
-overflow: hidden;
-border-radius: 8px;
-box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+const CalendarContainer = styled.div `
 .react-calendar { 
   padding: 30px 20px 40px 20px;
   border: 0;
@@ -168,6 +130,4 @@ box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
  .react-calendar--selectRange .react-calendar__tile--hover {
   background-color: #f8f8fa;
  }
-
 `
-export default CalendarSection;

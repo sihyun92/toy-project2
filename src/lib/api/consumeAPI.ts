@@ -60,8 +60,11 @@ export const deleteConsume = ({ id }: IDeleteConsume) => {
 
 // 소비 달력 호출 API(GET)
 interface IGetCalendarConsume {
+  year: number;
+  month: number;
   userId: string;
 }
-export const getCalendarConsume = ({ userId }: IGetCalendarConsume) => {
-  client.get(`api/expenses/calendar?year=2023&month=7&userId=${userId}`);
+export const getCalendarConsume = async ({ year, month, userId }: IGetCalendarConsume) => {
+  const response = await client.get(`/api/expenses/calendar?year=${year}&month=${month}&userId=${userId}`);
+  return response.data;
 };
