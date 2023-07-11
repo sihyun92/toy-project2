@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import CalendarSection from "./common/CalendarSection";
+import CalendarSection from "./calendar/CalendarSection";
 import { useState } from "react";
 import AddModal from "./modal/AddModal";
 import Button from "./common/Button";

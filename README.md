@@ -358,3 +358,19 @@ type ResponseValue = {
 - 함수 파라미터나 함수 컴포넌트 props의 타입을 정해줄 때는 <b>interface</b>를 사용합니다.
 - 8px ~ 100px 사이의 단위는 <b>rem</b>으로 사용하되, 적어도 8의 배수나 16의 배수의 길이를 사용해서 rem으로 변환되어도 산술하기 쉽게 스타일링합니다.
 - 8px 이하 혹은 100px 이상의 수치는 <b>px</b>로 사용합니다.
+
+# Commit
+
+Commit타입: :이모지: 내용 #이슈번호.  👉 ex) `feat: :sparkles: 로그인 API 추가 #1` 
+
+커밋 내용은 한글로 작성!
+
+commit 종류 | 이모지 | commit type
+-- | -- | --
+처음 구조 잡을 때 | `:tada:`  ⇒ 🎉 | init:
+새 기능 추가 | `:sparkles:` ⇒ ✨ | feat:
+버그를 고침 | `:bug:` ⇒ 🐛 | fix:
+기능 수정X, 위치 변경, 메소드 위치 변경 등… | `:hammer:` ⇒ 🔨 | refactor:
+문서를 수정 | `:books:` ⇒ 📚 | docs:
+코드를 정렬 | `:memo:` ⇒ 🗒️ | test:
+잡일 | `:wrench:` ⇒ 🛠️ | chore:
