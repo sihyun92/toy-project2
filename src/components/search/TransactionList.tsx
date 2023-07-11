@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import client from "../../lib/api/client";
+import { RiPencilFill, RiDeleteBinFill } from "react-icons/ri";
+import EditModal from "../modal/EditModal";
 
 interface ITransaction {
   amount: number;
   userId: string;
   category: string;
   date: string;
+  _id: string;
 }
 
 interface ITransactionListProps {
@@ -16,12 +19,14 @@ interface ITransactionListProps {
 const TransactionList = ({ userId }: ITransactionListProps) => {
   const [transactions, setTransactions] = useState<ITransaction[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [openEditModal, setOpenEditModal] = useState<boolean>(false);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
         const response = await client.get(
-          `/api/expenses/search?q=${searchQuery}&userId=${userId}`
+          `/api/expenses/search?q=${searchQuery}&userId=${userId}`,
         );
         const data = response.data as ITransaction[];
         setTransactions(data);
@@ -34,9 +39,17 @@ const TransactionList = ({ userId }: ITransactionListProps) => {
   }, [userId, searchQuery]);
 
   const handleSearchQueryChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setSearchQuery(event.target.value);
+  };
+
+  const handleOpenEditModal = (_id: string) => {
+    setOpenEditModal(true);
+    setSelectedItemId(_id);
+  };
+  const handleCloseEditModal = () => {
+    setOpenEditModal(false);
   };
 
   return (
@@ -70,6 +83,22 @@ const TransactionList = ({ userId }: ITransactionListProps) => {
                   <TransactionItemText>
                     {transaction.amount}원
                   </TransactionItemText>
+                  <button onClick={() => handleOpenEditModal(transaction._id)}>
+                    <RiPencilFill />
+                  </button>
+                  {openEditModal && selectedItemId === transaction._id && (
+                    <EditModal
+                      id={transaction._id}
+                      amount={transaction.amount}
+                      userId={transaction.userId}
+                      category={transaction.category}
+                      date={transaction.date}
+                      handleCloseModal={handleCloseEditModal}
+                    />
+                  )}
+                  <button>
+                    <RiDeleteBinFill />
+                  </button>
                 </TransactionItem>
               ))}
             </TransactionListTableBody>
