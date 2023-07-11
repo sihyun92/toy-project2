@@ -1,7 +1,24 @@
+import { Dispatch, SetStateAction, useEffect } from "react";
 import ApexCharts from "react-apexcharts";
 import styled from "styled-components";
+import { getCalendarConsume } from "../../lib/api/consumeAPI";
 
-function Chart() {
+interface IChartProps {
+  userId: string;
+  setUserId: Dispatch<SetStateAction<string>>;
+}
+
+function Chart({ userId, setUserId }: IChartProps) {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await getCalendarConsume({ userId });
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchData();
+  }, [userId]);
   return (
     <ChartContainer>
       <ApexCharts
@@ -54,9 +71,6 @@ const DummyBox = styled.div`
   width: 200px;
   height: 200px;
   background: blueviolet;
-  &:last-child {
-    background: goldenrod;
-  }
 `;
 
 export default Chart;
