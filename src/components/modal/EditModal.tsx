@@ -2,71 +2,98 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import "react-calendar/dist/Calendar.css";
 import "react-time-picker/dist/TimePicker.css";
-import { postConsume } from "../../lib/api/consumeAPI";
+import { putEditConsume } from "../../lib/api/consumeAPI";
 import { FiPlus, FiMinus, FiX } from "react-icons/fi";
 import moment from "moment";
 
-interface IAddModalProps {
+interface IEditModalProps {
+  id: string;
+  amount: number;
+  userId: string;
+  category: string;
+  date: any;
   handleCloseModal: () => void;
 }
 
-function AddModal({ handleCloseModal }: IAddModalProps) {
-  const [amount, setAmount] = useState<number>(0);
-  const [userId, setUserId] = useState("");
-  const [category, setCategory] = useState("");
-  const [dateValue, setDateValue] = useState<string>("");
-  const [timeValue, setTimeValue] = useState<string>("");
+function EditModal({
+  id,
+  amount,
+  userId,
+  category,
+  date,
+  handleCloseModal,
+}: IEditModalProps) {
+  const [editAmount, setEditAmount] = useState<number>(amount);
+  const [editUserId, setEditUserId] = useState<string>(userId);
+  const [editCategory, setEditCategory] = useState<string>(category);
+  const [editDateValue, setEditDateValue] = useState<string>(
+    date ? date.slice(0, 10) : "",
+  );
+  const [editTimeValue, setEditTimeValue] = useState<string>(
+    date ? moment(date).format("HH:mm") : "",
+  );
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  console.log("내가 찍은 내역", id, amount, userId, category, date);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target as HTMLInputElement;
     if (name === "amount") {
       if (!isNaN(Number(value))) {
-        setAmount(+value);
+        setEditAmount(+value);
       }
     } else if (name === "userId") {
-      setUserId(value);
+      setEditUserId(value);
     } else if (name === "category") {
-      setCategory(value);
+      setEditCategory(value);
+    } else if (name === "date") {
+      setEditDateValue(value);
+    } else if (name === "time") {
+      setEditTimeValue(value);
     }
   };
 
   const handleConvert = (operator: any) => {
-    if (isNaN(amount)) {
-      setAmount(0);
+    if (isNaN(editAmount)) {
+      setEditAmount(0);
       return;
     }
     if (operator === "+") {
-      setAmount(Math.abs(amount));
+      setEditAmount(+Math.abs(editAmount));
     } else if (operator === "-") {
-      setAmount(-Math.abs(amount));
+      setEditAmount(-Math.abs(editAmount));
     }
-  };
-
-  const handleTimeChange = (value: any) => {
-    setTimeValue(value);
   };
 
   const handleConfirm = () => {
-    const date = moment(
-      dateValue + (timeValue ? " " + timeValue : ""),
-    ).format();
+    const editedConsume = {
+      id: id,
+      amount: editAmount,
+      userId: editUserId,
+      category: editCategory,
+      date: moment(
+        editDateValue + (editTimeValue ? " " + editTimeValue : ""),
+      ).format(),
+    };
+    console.log(
+      "내가 바꾼 내역",
+      editedConsume.id,
+      editedConsume.amount,
+      editedConsume.userId,
+      editedConsume.category,
+      editedConsume.date,
+    );
 
     if (
-      (amount < 1 && amount > -1) ||
-      userId === "" ||
-      category === "" ||
-      date === ""
+      editedConsume.amount === 0 ||
+      editedConsume.userId === "" ||
+      editedConsume.category === "" ||
+      editedConsume.date === ""
     ) {
-      alert("빈칸을 모두 입력해주세요.");
+      alert("빈칸을 모두 입력해주세요");
       return;
     }
 
-    postConsume({
-      amount,
-      userId,
-      category,
-      date,
-    });
+    putEditConsume({ id: editedConsume.id }); //수정하는 api함수
     handleCloseModal();
   };
 
@@ -75,12 +102,12 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
       <ModalWrapper>
         <ModalContent>
           <ModalHeader>
-            <ModalTitle>내역 추가</ModalTitle>
+            <ModalTitle>내역 수정</ModalTitle>
             <ModalCloseButton onClick={handleCloseModal}>
               <FiX />
             </ModalCloseButton>
           </ModalHeader>
-          <ModalForm onSubmit={handleConfirm}>
+          <ModalForm>
             <ModalAmountWrap>
               <button type="button" onClick={() => handleConvert("+")}>
                 <FiPlus />
@@ -92,8 +119,8 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
 
               <ModalInputAmount
                 name="amount"
-                value={amount}
-                onChange={onChange}
+                value={editAmount}
+                onChange={handleChange}
                 placeholder="금액"
                 required
               />
@@ -102,16 +129,16 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
             <ModalInput
               type="text"
               name="userId"
-              value={userId}
-              onChange={onChange}
+              value={editUserId}
+              onChange={handleChange}
               placeholder="이름"
               required
             />
             <ModalInput
               type="text"
               name="category"
-              value={category}
-              onChange={onChange}
+              value={editCategory}
+              onChange={handleChange}
               placeholder="카테고리"
               required
             />
@@ -119,16 +146,16 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
               type="date"
               name="date"
               placeholder="날짜"
-              value={dateValue}
-              onChange={(event: any) => setDateValue(event.target.value)}
+              value={editDateValue}
+              onChange={handleChange}
               required
             />
             <ModalInput
               type="time"
               name="time"
               placeholder="시간"
-              value={timeValue}
-              onChange={(event: any) => handleTimeChange(event.target.value)}
+              value={editTimeValue}
+              onChange={handleChange}
               required
             />
             <ModalButtonContainer>
@@ -159,7 +186,7 @@ const ModalOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.1);
   z-index: 9999;
 `;
 
@@ -216,4 +243,4 @@ const ModalButton = styled.button`
   margin-left: 10px;
 `;
 
-export default AddModal;
+export default EditModal;

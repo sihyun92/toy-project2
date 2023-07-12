@@ -12,7 +12,7 @@ function Chart({ userId, setUserId }: IChartProps) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getCalendarConsume({ userId });
+        // const result = await getCalendarConsume({ userId });
       } catch (e) {
         console.error(e);
       }
