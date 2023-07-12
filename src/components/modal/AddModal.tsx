@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import ReactTimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
 import { postConsume } from "../../lib/api/consumeAPI";
 import { FiPlus, FiMinus, FiX } from "react-icons/fi";
+import moment from "moment";
 
 interface IAddModalProps {
   handleCloseModal: () => void;
@@ -15,9 +14,8 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
   const [amount, setAmount] = useState<number>(0);
   const [userId, setUserId] = useState("");
   const [category, setCategory] = useState("");
-  const [time, setTime] = useState<string | null>(null);
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [dateValue, setDateValue] = useState<string>("");
+  const [timeValue, setTimeValue] = useState<string>("");
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target as HTMLInputElement;
@@ -43,31 +41,23 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
       setAmount(-Math.abs(amount));
     }
   };
-  const handleInputClick = () => {
-    setShowCalendar(true);
-  };
 
-  const handleDateChange = (date: any) => {
-    setSelectedDate(date);
-    setShowCalendar(false);
-  };
-
-  const handleTimeChange = (value: string | null) => {
-    setTime(value);
+  const handleTimeChange = (value: any) => {
+    setTimeValue(value);
   };
 
   const handleConfirm = () => {
-    const formattedDate = selectedDate.toISOString().slice(0, 10);
-    const formattedTime = time !== null ? time : "";
-    const date = formattedDate + (formattedTime ? " " + formattedTime : "");
+    const date = moment(
+      dateValue + (timeValue ? " " + timeValue : ""),
+    ).format();
 
     if (
-      amount === 0 ||
+      (amount < 1 && amount > -1) ||
       userId === "" ||
       category === "" ||
-      formattedTime === ""
+      date === ""
     ) {
-      alert("빈칸을 모두 입력해주세요");
+      alert("빈칸을 모두 입력해주세요.");
       return;
     }
 
@@ -125,35 +115,21 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
               placeholder="카테고리"
               required
             />
-            <ModalDateWrap>
-              <ModalInput
-                type="text"
-                name="date"
-                placeholder="날짜 및 시간"
-                onClick={handleInputClick}
-                value={selectedDate.toLocaleString("ko-KR", {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                })}
-                required
-              />
-              {showCalendar && (
-                <Calendar
-                  onChange={handleDateChange}
-                  value={selectedDate}
-                  onClickDay={handleDateChange}
-                />
-              )}
-            </ModalDateWrap>
-
-            <ReactTimePicker
-              onChange={handleTimeChange}
-              value={time}
-              format="HH:mm"
-              disableClock={true}
-              clearIcon={null}
-              required={true}
+            <ModalInput
+              type="date"
+              name="date"
+              placeholder="날짜"
+              value={dateValue}
+              onChange={(event: any) => setDateValue(event.target.value)}
+              required
+            />
+            <ModalInput
+              type="time"
+              name="time"
+              placeholder="시간"
+              value={timeValue}
+              onChange={(event: any) => handleTimeChange(event.target.value)}
+              required
             />
             <ModalButtonContainer>
               <ModalButton type="button" onClick={handleCloseModal}>
@@ -230,7 +206,6 @@ const ModalInputAmount = styled.input`
   text-align: right;
 `;
 
-const ModalDateWrap = styled.div``;
 const ModalButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;

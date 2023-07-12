@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import ReactTimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
-import { postConsume, putEditConsume } from "../../lib/api/consumeAPI";
+import { putEditConsume } from "../../lib/api/consumeAPI";
 import { FiPlus, FiMinus, FiX } from "react-icons/fi";
+import moment from "moment";
 
 interface IEditModalProps {
   id: string;
@@ -24,73 +23,77 @@ function EditModal({
   date,
   handleCloseModal,
 }: IEditModalProps) {
-  const [currentAmount, setAmount] = useState<number>(amount);
-  const [currentUserId, setUserId] = useState<string>(userId);
-  const [currentCategory, setCategory] = useState<string>(category);
-  const [time, setTime] = useState<string | null>(null);
-  const [showCalendar, setShowCalendar] = useState<boolean>(false);
-  const [selectedDate, setSelectedDate] = useState<Date>(date);
+  const [editAmount, setEditAmount] = useState<number>(amount);
+  const [editUserId, setEditUserId] = useState<string>(userId);
+  const [editCategory, setEditCategory] = useState<string>(category);
+  const [editDateValue, setEditDateValue] = useState<string>(
+    date ? date.slice(0, 10) : "",
+  );
+  const [editTimeValue, setEditTimeValue] = useState<string>(
+    date ? moment(date).format("HH:mm") : "",
+  );
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  console.log("내가 찍은 내역", id, amount, userId, category, date);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target as HTMLInputElement;
     if (name === "amount") {
       if (!isNaN(Number(value))) {
-        setAmount(+value);
+        setEditAmount(+value);
       }
     } else if (name === "userId") {
-      setUserId(value);
+      setEditUserId(value);
     } else if (name === "category") {
-      setCategory(value);
+      setEditCategory(value);
+    } else if (name === "date") {
+      setEditDateValue(value);
+    } else if (name === "time") {
+      setEditTimeValue(value);
     }
   };
 
   const handleConvert = (operator: any) => {
-    if (isNaN(currentAmount)) {
-      setAmount(0);
+    if (isNaN(editAmount)) {
+      setEditAmount(0);
       return;
     }
     if (operator === "+") {
-      setAmount(+Math.abs(currentAmount));
+      setEditAmount(+Math.abs(editAmount));
     } else if (operator === "-") {
-      setAmount(-Math.abs(currentAmount));
+      setEditAmount(-Math.abs(editAmount));
     }
-  };
-  const handleInputClick = () => {
-    setShowCalendar(true);
-  };
-
-  const handleDateChange = (date: any) => {
-    setSelectedDate(date);
-    setShowCalendar(false);
-  };
-
-  const handleTimeChange = (value: string | null) => {
-    setTime(value);
   };
 
   const handleConfirm = () => {
-    const formattedDate = selectedDate.toISOString().slice(0, 10);
-    const formattedTime = time !== null ? time : "";
-    const date = formattedDate + (formattedTime ? " " + formattedTime : "");
-    console.log("formattedDate 날짜!!");
-    console.log("formattedTime 시간!!!");
+    const editedConsume = {
+      id: id,
+      amount: editAmount,
+      userId: editUserId,
+      category: editCategory,
+      date: moment(
+        editDateValue + (editTimeValue ? " " + editTimeValue : ""),
+      ).format(),
+    };
+    console.log(
+      "내가 바꾼 내역",
+      editedConsume.id,
+      editedConsume.amount,
+      editedConsume.userId,
+      editedConsume.category,
+      editedConsume.date,
+    );
 
     if (
-      currentAmount === 0 ||
-      currentUserId === "" ||
-      currentCategory === "" ||
-      formattedTime === ""
+      editedConsume.amount === 0 ||
+      editedConsume.userId === "" ||
+      editedConsume.category === "" ||
+      editedConsume.date === ""
     ) {
       alert("빈칸을 모두 입력해주세요");
       return;
     }
 
-    postConsume({
-      amount,
-      userId,
-      category,
-      date,
-    });
+    putEditConsume({ id: editedConsume.id }); //수정하는 api함수
     handleCloseModal();
   };
 
@@ -99,12 +102,12 @@ function EditModal({
       <ModalWrapper>
         <ModalContent>
           <ModalHeader>
-            <ModalTitle>내역 추가</ModalTitle>
+            <ModalTitle>내역 수정</ModalTitle>
             <ModalCloseButton onClick={handleCloseModal}>
               <FiX />
             </ModalCloseButton>
           </ModalHeader>
-          <ModalForm onSubmit={handleConfirm}>
+          <ModalForm>
             <ModalAmountWrap>
               <button type="button" onClick={() => handleConvert("+")}>
                 <FiPlus />
@@ -116,8 +119,8 @@ function EditModal({
 
               <ModalInputAmount
                 name="amount"
-                value={currentAmount}
-                onChange={onChange}
+                value={editAmount}
+                onChange={handleChange}
                 placeholder="금액"
                 required
               />
@@ -126,48 +129,34 @@ function EditModal({
             <ModalInput
               type="text"
               name="userId"
-              value={currentUserId}
-              onChange={onChange}
+              value={editUserId}
+              onChange={handleChange}
               placeholder="이름"
               required
             />
             <ModalInput
               type="text"
               name="category"
-              value={currentCategory}
-              onChange={onChange}
+              value={editCategory}
+              onChange={handleChange}
               placeholder="카테고리"
               required
             />
-            <ModalDateWrap>
-              <ModalInput
-                type="text"
-                name="date"
-                placeholder="날짜 및 시간"
-                onClick={handleInputClick}
-                value={selectedDate.toLocaleString("ko-KR", {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                })}
-                required
-              />
-              {showCalendar && (
-                <Calendar
-                  onChange={handleDateChange}
-                  value={selectedDate}
-                  onClickDay={handleDateChange}
-                />
-              )}
-            </ModalDateWrap>
-
-            <ReactTimePicker
-              onChange={handleTimeChange}
-              value={time}
-              format="HH:mm"
-              disableClock={true}
-              clearIcon={null}
-              required={true}
+            <ModalInput
+              type="date"
+              name="date"
+              placeholder="날짜"
+              value={editDateValue}
+              onChange={handleChange}
+              required
+            />
+            <ModalInput
+              type="time"
+              name="time"
+              placeholder="시간"
+              value={editTimeValue}
+              onChange={handleChange}
+              required
             />
             <ModalButtonContainer>
               <ModalButton type="button" onClick={handleCloseModal}>
@@ -244,7 +233,6 @@ const ModalInputAmount = styled.input`
   text-align: right;
 `;
 
-const ModalDateWrap = styled.div``;
 const ModalButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
