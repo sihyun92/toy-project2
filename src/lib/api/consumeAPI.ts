@@ -58,10 +58,20 @@ export const getPeriodConsume = async (period: string, userId: string) => {
 // 소비 기록 수정 API(PUT)
 interface IPutEditConsume {
   id: string;
+  amount: number;
+  userId: string;
+  category: string;
+  date: string;
 }
-export const putEditConsume = async ({ id }: IPutEditConsume) => {
-  const result = await client.put(`api/expenses/${id}`);
-  return result.data;
+
+export const putEditConsume = ({
+  id,
+  amount,
+  userId,
+  category,
+  date,
+}: IPutEditConsume) => {
+  client.put(`/api/expenses/${id}`, { amount, userId, category, date });
 };
 
 // 소비 기록 삭제 API(DELETE)
