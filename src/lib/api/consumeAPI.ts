@@ -29,7 +29,6 @@ interface IGetConsume {
 }
 export const getConsume = ({ userId }: IGetConsume) => {
   client.get(`api/categories?userId=${userId}`);
-  
 };
 
 // 검색어에 해당하는 소비 항목 및 금액 조회 API(GET)
@@ -53,9 +52,20 @@ export const getPeriodConsume = ({ period, userId }: IGetPeriodConsume) => {
 // 소비 기록 수정 API(PUT)
 interface IPutEditConsume {
   id: string;
+  amount: number;
+  userId: string;
+  category: string;
+  date: string;
 }
-export const putEditConsume = ({ id }: IPutEditConsume) => {
-  client.put(`api/expenses/${id}`);
+
+export const putEditConsume = ({
+  id,
+  amount,
+  userId,
+  category,
+  date,
+}: IPutEditConsume) => {
+  client.put(`/api/expenses/${id}`, { amount, userId, category, date });
 };
 
 // 소비 기록 삭제 API(DELETE)
@@ -72,7 +82,13 @@ interface IGetCalendarConsume {
   month: number;
   userId: string;
 }
-export const getCalendarConsume = async ({ year, month, userId }: IGetCalendarConsume) => {
-  const response = await client.get(`/api/expenses/calendar?year=${year}&month=${month}&userId=${userId}`);
+export const getCalendarConsume = async ({
+  year,
+  month,
+  userId,
+}: IGetCalendarConsume) => {
+  const response = await client.get(
+    `/api/expenses/calendar?year=${year}&month=${month}&userId=${userId}`,
+  );
   return response.data;
 };

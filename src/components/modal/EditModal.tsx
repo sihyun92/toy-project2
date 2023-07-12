@@ -93,7 +93,13 @@ function EditModal({
       return;
     }
 
-    putEditConsume({ id: editedConsume.id }); //수정하는 api함수
+    putEditConsume({
+      id: editedConsume.id,
+      amount: editedConsume.amount,
+      userId: editedConsume.userId,
+      category: editedConsume.category,
+      date: editedConsume.date,
+    }); //수정하는 api함수
     handleCloseModal();
   };
 
