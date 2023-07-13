@@ -4,6 +4,7 @@ import { useState } from "react";
 import AddModal from "./modal/AddModal";
 import Button from "./common/Button";
 import Chart from "./chart/Chart";
+import Search from "./search/Search";
 
 function Main() {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -24,6 +25,7 @@ function Main() {
         <span>내역 추가</span>
       </Button>
       {openModal && <AddModal handleCloseModal={handleCloseModal} />}
+      <Search userId="user123" />
     </MainContainer>
   );
 }
