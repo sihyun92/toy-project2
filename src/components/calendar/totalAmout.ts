@@ -7,6 +7,9 @@ interface IExpense {
 }
 
 export const totalAmout = (a:IExpense[]) => {
+  if (a === undefined) {
+    return [0,0];
+  }
   let totalAmountPosi = 0;
   let totalAmountNeg = 0;
   for (let i = 0; i < a.length; i++) {

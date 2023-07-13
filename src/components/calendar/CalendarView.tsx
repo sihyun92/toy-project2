@@ -30,15 +30,16 @@ export function CalendarView() {
     <CalendarContainer>
       <Calendar
       value={value}
+      calendarType={'US'}
       onActiveStartDateChange={({ activeStartDate }: any) => setValue(activeStartDate)}
       showNeighboringMonth={false}
       onChange={(value: any) => setValue(value)}
       tileContent={({ date, view }: { date: Date; view: string }) => 
         view === 'month' && Object.keys(monthlyCharge).map(a => a === date.getDate().toString() ?
-          <>
+          <div key={a}>
             {totalAmout(monthlyCharge[Number(a)])[0]!==0? <p className="amout-text">{totalAmout(monthlyCharge[Number(a)])[0].toLocaleString()}</p> : null}
             {totalAmout(monthlyCharge[Number(a)])[1]!==0? <p className="amout-text posi">{'+'+totalAmout(monthlyCharge[Number(a)])[1].toLocaleString()}</p> : null}
-          </>
+          </div>
           : null)}
         />
     </CalendarContainer>
