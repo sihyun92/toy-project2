@@ -48,11 +48,11 @@ export const getSearchConsume = async ({
 };
 
 // 일별, 주별, 월별 소비 조회 API(GET)
-export const getPeriodConsume = async (period: string, userId: string) => {
-  const result = await client.get(
+export const getPeriodConsume = (period: string, userId: string) => {
+  const result = client.get(
     `api/expenses/summary?period=${period}&userId=${userId}`,
   );
-  return result.data;
+  return result;
 };
 
 // 소비 기록 수정 API(PUT)
