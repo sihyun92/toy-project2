@@ -5,9 +5,14 @@ import "react-calendar/dist/Calendar.css";
 import { getCalendarConsume } from "../../lib/api/consumeAPI";
 import { totalAmout } from "./totalAmout";
 
+type Props = {
+  nowYear: number,
+  nowMonth: number,
+  getYearData(year:number): void,
+  getMonthData(month:number): void
+}
 
-
-export function CalendarView(props:any) {
+export function CalendarView(props:Props) {
   const [monthlyCharge, setMonthlyCharge] = useState([]);
   const [value, setValue] = useState(new Date(`${props.nowYear}-${props.nowMonth+1}-${new Date().getDate()}`));
   const navMonth = value.getMonth();
@@ -51,7 +56,7 @@ export function CalendarView(props:any) {
       <Calendar
         value={value}
         calendarType={'US'}
-        onActiveStartDateChange={({ action, activeStartDate }: any) => setValue(activeStartDate)}
+        onActiveStartDateChange={({ activeStartDate }: any) => setValue(activeStartDate)}
         showNeighboringMonth={false}
         tileContent={({ date, view }: { date: Date; view: string }) => 
           view === 'month' && Object.keys(monthlyCharge).map(a => a === date.getDate().toString() ?

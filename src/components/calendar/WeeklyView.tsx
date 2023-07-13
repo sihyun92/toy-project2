@@ -3,8 +3,14 @@ import { getCalendarConsume } from "../../lib/api/consumeAPI";
 import { totalAmout } from "./totalAmout";
 import { styled } from "styled-components";
 
+type Props = {
+  nowYear: number,
+  nowMonth: number,
+  getYearData(year:number): void,
+  getMonthData(month:number): void
+}
 
-export function WeeklyView(props:any) {
+export function WeeklyView(props:Props) {
   const [thisMonthData, setThisMonthData] = useState([]);
   const [navMonth, setNavMonth] = useState<number>(props.nowMonth+1);
   const [navYear, setNavYear] = useState<number>(props.nowYear);
