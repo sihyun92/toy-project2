@@ -1,7 +1,5 @@
 import { Dispatch, SetStateAction, useCallback } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-// TransactionList 컴포넌트 임포트
-import TransactionList from "./components/search/TransactionList";
 import ErrorPage from "./pages/ErrorPage";
 import MainPage from "./pages/MainPage";
 
@@ -28,12 +26,6 @@ function Router({ theme, setTheme }: IRouterProps) {
           path="/"
           element={<MainPage isLight={isLight} onToggleDark={onToggleDark} />}
         />
-        {/* TransactionList 컴포넌트를 /transactions 경로에 대한 Route로 추가 / userId 값을 전달 */}
-        <Route
-          path="/transactions"
-          element={<TransactionList userId="user123" />}
-        />
-
         <Route path="/*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>
