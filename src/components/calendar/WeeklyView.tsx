@@ -4,14 +4,10 @@ import { totalAmout } from "./totalAmout";
 import { styled } from "styled-components";
 
 
-export function WeeklyView() {
-  const now = new Date();
-  const nowMonth = now.getMonth();
-  const nowYear = now.getFullYear();
-
+export function WeeklyView(props:any) {
   const [thisMonthData, setThisMonthData] = useState([]);
-  const [navMonth, setNavMonth] = useState<number>(nowMonth+1);
-  const [navYear, setNavYear] = useState<number>(nowYear);
+  const [navMonth, setNavMonth] = useState<number>(props.nowMonth+1);
+  const [navYear, setNavYear] = useState<number>(props.nowYear);
 
   //api호출
   useEffect(() => {
@@ -26,19 +22,30 @@ export function WeeklyView() {
     fetchData();
   }, [navYear, navMonth]);
 
-  const thisMonthDataKey = Object.keys(thisMonthData)
-  const nowMonthFirst = new Date(navYear, navMonth-1, 1).getDay();
-  console.log(nowMonthFirst)
-  const nowMonthLastDate = new Date(navYear, navMonth, 0).getDate();
-  const weekDevide = thisMonthDataKey.map(a => Math.ceil((Number(a) + nowMonthFirst) / 7));
-  const weeks = Math.ceil((nowMonthFirst + nowMonthLastDate) / 7);
+  //CalendarSection으로 값이 바뀔 때마다 prop 재전달
+  useEffect(() => {
+    const setNowYear = () => {
+      props.getYearData(navYear);
+    };
+    const setNowMonth = () => {
+      props.getMonthData(navMonth-1);
+    };
+    setNowYear();
+    setNowMonth();
+  }, [navYear, navMonth])
+  
+    
+  const thisMonthDataKey = Object.keys(thisMonthData); //thisMonthData의 key값을 배열로 받아옴
+  const nowMonthFirst = new Date(navYear, navMonth-1, 1).getDay(); //해당 달 1일의 요일을 받아옴
+  const nowMonthLastDate = new Date(navYear, navMonth, 0).getDate(); //해당 달의 마지막 일을 받아옴
+  const weekDevide = thisMonthDataKey.map(a => Math.ceil((Number(a) + nowMonthFirst) / 7)); //thisMonthData가 들어있는 일이 몇번째 주에 속해있는지 배열로 받아옴
+  const weeks = Math.ceil((nowMonthFirst + nowMonthLastDate) / 7); //해당 달이 몇째 주 까지 있는지 받아옴
 
+  //weeknum번째 주의 수익과 지출을 계산해 반환
   const weekTotal = (weeknum : number) => {
-
     let weekIndex = [weekDevide.indexOf(weeknum), weekDevide.lastIndexOf(weeknum)]
     let weekExpenses = 0;
     let weekIncome = 0;
-    console.log(weekDevide)
     for (let i=weekIndex[0]; i<=weekIndex[1]; i++) {
       let thisMonthDataIndex = Number(thisMonthDataKey[i]);
       weekExpenses += totalAmout(thisMonthData[thisMonthDataIndex])[0];
@@ -47,6 +54,7 @@ export function WeeklyView() {
     return [weekExpenses, weekIncome]
   }
 
+  //weekTotal을 이용하여 각 주마다의 수익, 지출 현황을 반환
   const weekList = () => {
     const result = [];
     for(let i = 1; i <= weeks; i++) {
@@ -66,6 +74,7 @@ export function WeeklyView() {
     return result;
   }
 
+  //nav의 버튼을 누르면 실행되는 함수, +하거나 -함
   const handleNavNext = () => {
     if (navMonth === 12) {
       setNavMonth(1);

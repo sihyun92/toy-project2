@@ -8,6 +8,16 @@ import { WeeklyView } from "./WeeklyView";
 
 function CalendarSection() {
   const [toggleBtn, setToggleBtn] = useState(true);
+  const now = new Date();
+  const [nowYear, setNowYear] = useState(now.getFullYear());
+  const [nowMonth, setNowMonth] = useState(now.getMonth());
+
+  const getYearData = (year:number) => {
+    setNowYear(year);
+  }
+  const getMonthData = (month:number) => {
+    setNowMonth(month);
+  }
 
   return (
     <>
@@ -15,7 +25,10 @@ function CalendarSection() {
       <Button onClick={() => setToggleBtn(true)}>월별</Button>
       <Button onClick={() => setToggleBtn(false)}>주간별</Button>
       <Container>
-        {toggleBtn === true ? ( <CalendarView /> ) : ( <WeeklyView /> )}
+        {toggleBtn === true ? 
+          ( <CalendarView nowYear={nowYear} nowMonth={nowMonth} getYearData={getYearData} getMonthData={getMonthData} /> ) : 
+          ( <WeeklyView nowYear={nowYear} nowMonth={nowMonth} getYearData={getYearData} getMonthData={getMonthData} /> )
+        }
       </Container>
     </>
   );
