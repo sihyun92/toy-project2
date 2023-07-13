@@ -27,9 +27,9 @@ export const postConsume = async ({
 interface IGetConsume {
   userId: string;
 }
-export const getConsume = ({ userId }: IGetConsume) => {
-  client.get(`api/categories?userId=${userId}`);
-  
+export const getConsume = async ({ userId }: IGetConsume) => {
+  const result = await client.get(`api/categories?userId=${userId}`);
+  return result.data;
 };
 
 // 검색어에 해당하는 소비 항목 및 금액 조회 API(GET)
@@ -37,33 +37,50 @@ interface IGetSearchConsume {
   keyword: string;
   userId: string;
 }
-export const getSearchConsume = ({ keyword, userId }: IGetSearchConsume) => {
-  client.get(`api/expenses/search?q=${keyword}&userId=${userId}`);
+export const getSearchConsume = async ({
+  keyword,
+  userId,
+}: IGetSearchConsume) => {
+  const result = await client.get(
+    `api/expenses/search?q=${keyword}&userId=${userId}`,
+  );
+  return result.data;
 };
 
 // 일별, 주별, 월별 소비 조회 API(GET)
-interface IGetPeriodConsume {
-  period: string;
-  userId: string;
-}
-export const getPeriodConsume = ({ period, userId }: IGetPeriodConsume) => {
-  client.get(`api/expenses/summary?period=${period}&userId=${userId}`);
+export const getPeriodConsume = async (period: string, userId: string) => {
+  const result = await client.get(
+    `api/expenses/summary?period=${period}&userId=${userId}`,
+  );
+  return result.data;
 };
 
 // 소비 기록 수정 API(PUT)
 interface IPutEditConsume {
   id: string;
+  amount: number;
+  userId: string;
+  category: string;
+  date: string;
 }
-export const putEditConsume = ({ id }: IPutEditConsume) => {
-  client.put(`api/expenses/${id}`);
+
+export const putEditConsume = ({
+  id,
+  amount,
+  userId,
+  category,
+  date,
+}: IPutEditConsume) => {
+  client.put(`/api/expenses/${id}`, { amount, userId, category, date });
 };
 
 // 소비 기록 삭제 API(DELETE)
 interface IDeleteConsume {
   id: string;
 }
-export const deleteConsume = ({ id }: IDeleteConsume) => {
-  client.delete(`api/expenses/${id}`);
+export const deleteConsume = async ({ id }: IDeleteConsume) => {
+  const result = await client.delete(`api/expenses/${id}`);
+  return result.data;
 };
 
 // 소비 달력 호출 API(GET)
@@ -72,7 +89,13 @@ interface IGetCalendarConsume {
   month: number;
   userId: string;
 }
-export const getCalendarConsume = async ({ year, month, userId }: IGetCalendarConsume) => {
-  const response = await client.get(`/api/expenses/calendar?year=${year}&month=${month}&userId=${userId}`);
+export const getCalendarConsume = async ({
+  year,
+  month,
+  userId,
+}: IGetCalendarConsume) => {
+  const response = await client.get(
+    `/api/expenses/calendar?year=${year}&month=${month}&userId=${userId}`,
+  );
   return response.data;
 };

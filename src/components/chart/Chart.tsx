@@ -1,28 +1,34 @@
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import ApexCharts from "react-apexcharts";
+import { useMutation, useQuery } from "react-query";
 import styled from "styled-components";
-import { getCalendarConsume } from "../../lib/api/consumeAPI";
+import { getPeriodConsume } from "../../lib/api/consumeAPI";
 
 interface IChartProps {
   userId: string;
-  setUserId: Dispatch<SetStateAction<string>>;
+  year: number;
+  month: number;
 }
 
-function Chart({ userId, setUserId }: IChartProps) {
+function Chart() {
+  const [period, setPeriod] = useState("");
+  const [userId, setUserId] = useState("");
+  const { data, isLoading } = useQuery(
+    ["chart"],
+    () => getPeriodConsume(period, userId),
+    {
+      refetchInterval: 10000,
+    },
+  );
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await getCalendarConsume({ userId });
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    fetchData();
-  }, [userId]);
+    getPeriodConsume("daily", "user123");
+    console.log(getPeriodConsume);
+  }, []);
+
   return (
     <ChartContainer>
       <ApexCharts
-        series={[0, 10, 20, 30, 40]}
+        series={[1, 2, 3, 4, 5]}
         type="donut"
         options={{
           labels: ["a", "b", "c", "d", "e"],
@@ -34,20 +40,6 @@ function Chart({ userId, setUserId }: IChartProps) {
           },
           title: {
             text: "title",
-          },
-          plotOptions: {
-            pie: {
-              donut: {
-                labels: {
-                  name: {
-                    show: true,
-                    formatter: (val) => {
-                      return val;
-                    },
-                  },
-                },
-              },
-            },
           },
         }}
       />

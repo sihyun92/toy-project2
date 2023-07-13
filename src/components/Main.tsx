@@ -7,7 +7,6 @@ import Chart from "./chart/Chart";
 
 function Main() {
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [userId, setUserId] = useState("");
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -18,7 +17,7 @@ function Main() {
 
   return (
     <MainContainer>
-      <Chart userId={userId} setUserId={setUserId} />
+      <Chart />
       <CalendarSection />
       <Button onClick={handleOpenModal}>
         <span>+</span>
