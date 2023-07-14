@@ -2,6 +2,11 @@ import { useEffect, useState } from "react";
 import { getPeriodConsume } from "../../lib/api/consumeAPI";
 import ApexCharts from "react-apexcharts";
 
+interface IExpense {
+  _id: string;
+  totalAmount: number;
+}
+
 // Date
 const now = new Date();
 const nowMonth = now.getMonth() + 1;
@@ -14,9 +19,9 @@ function MonthlyChart() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getPeriodConsume("month", "team1");
-        setAmount(result.data);
-        console.log(result.data);
+        const result = await getPeriodConsume("monthly", "team1");
+        setAmount(result.data.map((item: IExpense) => item.totalAmount));
+        console.log(result.data[0]);
       } catch (e) {
         console.error(e, "오류 발생!");
       }
