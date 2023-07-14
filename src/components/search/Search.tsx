@@ -4,23 +4,35 @@ import { getSearchConsume } from "../../lib/api/consumeAPI";
 import Button from "../common/Button";
 import { RiPencilFill, RiDeleteBinFill } from "react-icons/ri";
 import EditModal from "../modal/EditModal";
+import DeleteModal from "../modal/DeleteModal";
 
 interface ISearchProps {
   userId: string;
 }
+interface ISearchResult {
+  amount: number;
+  userId: string;
+  category: string;
+  date: string;
+  _id: string;
+}
 
 const Search = ({ userId }: ISearchProps) => {
-  interface ISearchResult {
-    amount: number;
-    userId: string;
-    category: string;
-    date: string;
-    _id: string;
-  }
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState<ISearchResult[]>([]);
   const [openEditModal, setOpenEditModal] = useState<boolean>(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+
+  const handleCloseDeleteModal = () => {
+    setOpenDeleteModal(false);
+    setSearchResults((prevResults) => [...prevResults]);
+  };
+
+  const handleOpenDeleteModal = (_id: string) => {
+    setOpenDeleteModal(true);
+    setSelectedItemId(_id);
+  };
 
   const handleOpenEditModal = (_id: string) => {
     setOpenEditModal(true);
@@ -29,6 +41,7 @@ const Search = ({ userId }: ISearchProps) => {
 
   const handleCloseEditModal = () => {
     setOpenEditModal(false);
+    setSearchResults((prevResults) => [...prevResults]);
   };
 
   const handleSearch = async () => {
@@ -42,25 +55,6 @@ const Search = ({ userId }: ISearchProps) => {
       console.log("Error occurred while searching:", error);
     }
   };
-
-  // const formatDate = (dateString: string) => {
-  //   const date = new Date(dateString);
-  //   const year = date.getFullYear();
-  //   const month = String(date.getMonth() + 1).padStart(2, "0");
-  //   const day = String(date.getDate()).padStart(2, "0");
-  //   let hours = String(date.getHours());
-  //   let minutes = String(date.getMinutes());
-  //   let period = "오전";
-
-  //   if (date.getHours() >= 12) {
-  //     period = "오후";
-  //     hours = String(date.getHours() - 12);
-  //   }
-  //   hours = hours.padStart(2, "0");
-  //   minutes = minutes.padStart(2, "0");
-
-  //   return `${year}-${month}-${day} ${period} ${hours}:${minutes}`;
-  // };
 
   return (
     <Container>
@@ -89,7 +83,7 @@ const Search = ({ userId }: ISearchProps) => {
           {searchResults.map((result, index) => (
             <ResultItem key={index}>
               <Category>{result.category}</Category>
-              {/* <Date>{formatDate(result.date)}</Date> */}
+              <Date>{result.date}</Date>
               <Amount>{result.amount}원</Amount>
               <EditButton onClick={() => handleOpenEditModal(result._id)}>
                 <RiPencilFill />
@@ -104,9 +98,15 @@ const Search = ({ userId }: ISearchProps) => {
                   handleCloseModal={handleCloseEditModal}
                 />
               )}
-              <DeleteButton>
+              <DeleteButton onClick={() => handleOpenDeleteModal(result._id)}>
                 <RiDeleteBinFill />
               </DeleteButton>
+              {openDeleteModal && selectedItemId === result._id && (
+                <DeleteModal
+                  id={result._id}
+                  handleCloseModal={handleCloseDeleteModal}
+                />
+              )}
             </ResultItem>
           ))}
         </ResultContainer>

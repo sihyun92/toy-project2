@@ -58,7 +58,7 @@ function EditModal({
       return;
     }
     if (operator === "+") {
-      setEditAmount(+Math.abs(editAmount));
+      setEditAmount(Math.abs(editAmount));
     } else if (operator === "-") {
       setEditAmount(-Math.abs(editAmount));
     }
