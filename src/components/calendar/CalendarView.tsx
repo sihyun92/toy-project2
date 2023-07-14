@@ -5,20 +5,27 @@ import "react-calendar/dist/Calendar.css";
 import { getCalendarConsume } from "../../lib/api/consumeAPI";
 import { totalAmout } from "./totalAmout";
 
-export function CalendarView() {
-  const [monthlyCharge, setMonthlyCharge] = useState([]);
-  const [value, setValue] = useState(new Date());
+type Props = {
+  nowYear: number,
+  nowMonth: number,
+  getYearData(year:number): void,
+  getMonthData(month:number): void
+}
 
-  const nowMonth = value.getMonth();
-  const nowYear = value.getFullYear();
+export function CalendarView(props:Props) {
+  const [monthlyCharge, setMonthlyCharge] = useState([]);
+  const [value, setValue] = useState(new Date(`${props.nowYear}-${props.nowMonth+1}-${new Date().getDate()}`));
+  const navMonth = value.getMonth();
+  const navYear = value.getFullYear();
+
 
   //api호출
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await getCalendarConsume({
-          year: nowYear,
-          month: nowMonth + 1,
+          year: navYear,
+          month: navMonth + 1,
           userId: "team1",
         });
         setMonthlyCharge(result);
@@ -26,39 +33,41 @@ export function CalendarView() {
         console.error(error);
       }
     };
+
     fetchData();
-  }, [value, nowYear, nowMonth]);
+
+  }, [navYear, navMonth]);
+  
+  //CalendarSection으로 값이 바뀔 때마다 prop 재전달
+  useEffect(() => {
+    const setNowYear = () => {
+      props.getYearData(navYear);
+    };
+    const setNowMonth = () => {
+      props.getMonthData(navMonth);
+    };
+    setNowYear();
+    setNowMonth();
+  }, [navYear, navMonth])
+  
 
   return (
     <CalendarContainer>
       <Calendar
         value={value}
-        onActiveStartDateChange={({ activeStartDate }: any) =>
-          setValue(activeStartDate)
-        }
-        showNeighboringMonth={false}
+        calendarType={'US'}
         onChange={(value: any) => setValue(value)}
-        tileContent={({ date, view }: { date: Date; view: string }) =>
-          view === "month" &&
-          Object.keys(monthlyCharge).map((a) =>
-            a === date.getDate().toString() ? (
-              <>
-                {totalAmout(monthlyCharge[Number(a)])[0] !== 0 ? (
-                  <p className="amout-text">
-                    {totalAmout(monthlyCharge[Number(a)])[0].toLocaleString()}
-                  </p>
-                ) : null}
-                {totalAmout(monthlyCharge[Number(a)])[1] !== 0 ? (
-                  <p className="amout-text posi">
-                    {"+" +
-                      totalAmout(monthlyCharge[Number(a)])[1].toLocaleString()}
-                  </p>
-                ) : null}
-              </>
-            ) : null,
-          )
-        }
-      />
+        onActiveStartDateChange={({ activeStartDate }: any) => setValue(activeStartDate)}
+        showNeighboringMonth={false}
+        tileContent={({ date, view }: { date: Date; view: string }) => 
+          view === 'month' && Object.keys(monthlyCharge).map(a => a === date.getDate().toString() ?
+            <div key={a}>
+              {totalAmout(monthlyCharge[Number(a)])[0]!==0? <p className="amout-text">{totalAmout(monthlyCharge[Number(a)])[0].toLocaleString()}</p> : null}
+              {totalAmout(monthlyCharge[Number(a)])[1]!==0? <p className="amout-text posi">{'+'+totalAmout(monthlyCharge[Number(a)])[1].toLocaleString()}</p> : null}
+            </div>
+            : null
+        )}
+        />
     </CalendarContainer>
   );
 }
@@ -68,7 +77,7 @@ const CalendarContainer = styled.div`
     padding: 30px 20px 40px 20px;
     border: 0;
     width: 100%;
-    background-color: #fff;
+    background-color: ${(props) => props.theme.bgColor};
     color: #222;
     font-family: Arial, Helvetica, sans-serif;
     line-height: 1.4em;
@@ -81,8 +90,9 @@ const CalendarContainer = styled.div`
     margin-top: 8px;
   }
   .amout-text {
-    color: rgba(0, 0, 0, 0.5);
+    color: ${(props) => props.theme.textColor};
     font-size: 12px;
+    opacity: .5;
   }
   .react-calendar__navigation button:enabled:hover,
   .react-calendar__navigation button:enabled:focus {
@@ -102,6 +112,7 @@ const CalendarContainer = styled.div`
     gap: 6px;
     .posi {
       color: #6f48eb;
+      opacity: 1;
     }
   }
   .react-calendar__month-view__days__day--weekend {
@@ -109,7 +120,7 @@ const CalendarContainer = styled.div`
   }
   .react-calendar__tile:enabled:hover,
   .react-calendar__tile:enabled:focus {
-    background: #f8f8fa;
+    background: ${(props) => props.theme.hoverColor};
     color: #6f48eb;
     border-radius: 6px;
   }
