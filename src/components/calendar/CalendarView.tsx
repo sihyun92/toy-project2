@@ -56,6 +56,7 @@ export function CalendarView(props:Props) {
       <Calendar
         value={value}
         calendarType={'US'}
+        onChange={(value: any) => setValue(value)}
         onActiveStartDateChange={({ activeStartDate }: any) => setValue(activeStartDate)}
         showNeighboringMonth={false}
         tileContent={({ date, view }: { date: Date; view: string }) => 
@@ -76,7 +77,7 @@ const CalendarContainer = styled.div`
     padding: 30px 20px 40px 20px;
     border: 0;
     width: 100%;
-    background-color: #fff;
+    background-color: ${(props) => props.theme.bgColor};
     color: #222;
     font-family: Arial, Helvetica, sans-serif;
     line-height: 1.4em;
@@ -89,8 +90,9 @@ const CalendarContainer = styled.div`
     margin-top: 8px;
   }
   .amout-text {
-    color: rgba(0, 0, 0, 0.5);
+    color: ${(props) => props.theme.textColor};
     font-size: 12px;
+    opacity: .5;
   }
   .react-calendar__navigation button:enabled:hover,
   .react-calendar__navigation button:enabled:focus {
@@ -110,6 +112,7 @@ const CalendarContainer = styled.div`
     gap: 6px;
     .posi {
       color: #6f48eb;
+      opacity: 1;
     }
   }
   .react-calendar__month-view__days__day--weekend {
@@ -117,7 +120,7 @@ const CalendarContainer = styled.div`
   }
   .react-calendar__tile:enabled:hover,
   .react-calendar__tile:enabled:focus {
-    background: #f8f8fa;
+    background: ${(props) => props.theme.hoverColor};
     color: #6f48eb;
     border-radius: 6px;
   }
