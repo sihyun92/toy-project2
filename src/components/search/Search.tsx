@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { getSearchConsume } from "../../lib/api/consumeAPI";
 import Button from "../common/Button";
+import { RiPencilFill, RiDeleteBinFill } from "react-icons/ri";
+import EditModal from "../modal/EditModal";
 
 interface ISearchProps {
   userId: string;
@@ -13,9 +15,21 @@ const Search = ({ userId }: ISearchProps) => {
     userId: string;
     category: string;
     date: string;
+    _id: string;
   }
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState<ISearchResult[]>([]);
+  const [openEditModal, setOpenEditModal] = useState<boolean>(false);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+
+  const handleOpenEditModal = (_id: string) => {
+    setOpenEditModal(true);
+    setSelectedItemId(_id);
+  };
+
+  const handleCloseEditModal = () => {
+    setOpenEditModal(false);
+  };
 
   const handleSearch = async () => {
     try {
@@ -28,6 +42,25 @@ const Search = ({ userId }: ISearchProps) => {
       console.log("Error occurred while searching:", error);
     }
   };
+
+  // const formatDate = (dateString: string) => {
+  //   const date = new Date(dateString);
+  //   const year = date.getFullYear();
+  //   const month = String(date.getMonth() + 1).padStart(2, "0");
+  //   const day = String(date.getDate()).padStart(2, "0");
+  //   let hours = String(date.getHours());
+  //   let minutes = String(date.getMinutes());
+  //   let period = "오전";
+
+  //   if (date.getHours() >= 12) {
+  //     period = "오후";
+  //     hours = String(date.getHours() - 12);
+  //   }
+  //   hours = hours.padStart(2, "0");
+  //   minutes = minutes.padStart(2, "0");
+
+  //   return `${year}-${month}-${day} ${period} ${hours}:${minutes}`;
+  // };
 
   return (
     <Container>
@@ -45,16 +78,35 @@ const Search = ({ userId }: ISearchProps) => {
       </SearchContainer>
       {searchResults.length > 0 && (
         <ResultContainer>
+          {/* Result header */}
           <ResultHeader>
             <ResultHeaderText>카테고리</ResultHeaderText>
             <ResultHeaderText>날짜</ResultHeaderText>
             <ResultHeaderText>금액</ResultHeaderText>
           </ResultHeader>
+
+          {/* Result items */}
           {searchResults.map((result, index) => (
             <ResultItem key={index}>
               <Category>{result.category}</Category>
-              <Date>{result.date}</Date>
+              {/* <Date>{formatDate(result.date)}</Date> */}
               <Amount>{result.amount}원</Amount>
+              <EditButton onClick={() => handleOpenEditModal(result._id)}>
+                <RiPencilFill />
+              </EditButton>
+              {openEditModal && selectedItemId === result._id && (
+                <EditModal
+                  id={result._id}
+                  amount={result.amount}
+                  userId={result.userId}
+                  category={result.category}
+                  date={result.date}
+                  handleCloseModal={handleCloseEditModal}
+                />
+              )}
+              <DeleteButton>
+                <RiDeleteBinFill />
+              </DeleteButton>
             </ResultItem>
           ))}
         </ResultContainer>
@@ -141,6 +193,22 @@ const Date = styled.div`
 const Amount = styled.div`
   flex: 1;
   text-align: left;
+`;
+
+const EditButton = styled.button`
+  margin-left: 5px;
+  padding: 5px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+`;
+
+const DeleteButton = styled.button`
+  margin-left: 5px;
+  padding: 5px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 `;
 
 export default Search;
