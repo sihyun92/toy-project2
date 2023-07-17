@@ -7,16 +7,6 @@ import { WeeklyView } from "./WeeklyView";
 
 function CalendarSection() {
   const [toggleBtn, setToggleBtn] = useState(true);
-  const now = new Date();
-  const [nowYear, setNowYear] = useState(now.getFullYear());
-  const [nowMonth, setNowMonth] = useState(now.getMonth());
-
-  const getYearData = (year:number) => {
-    setNowYear(year);
-  }
-  const getMonthData = (month:number) => {
-    setNowMonth(month);
-  }
 
   return (
     <Section>
@@ -35,8 +25,8 @@ function CalendarSection() {
       </Header>
       <Container>
         {toggleBtn === true ? 
-          ( <CalendarView nowYear={nowYear} nowMonth={nowMonth} getYearData={getYearData} getMonthData={getMonthData} /> ) : 
-          ( <WeeklyView nowYear={nowYear} nowMonth={nowMonth} getYearData={getYearData} getMonthData={getMonthData} /> )
+          ( <CalendarView/> ) : 
+          ( <WeeklyView /> )
         }
       </Container>
     </Section>

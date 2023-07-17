@@ -4,20 +4,14 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { getCalendarConsume } from "../../lib/api/consumeAPI";
 import { totalAmout } from "./totalAmout";
+import { useRecoilState } from "recoil";
+import { todayAtom } from "../../state/today";
 
-type Props = {
-  nowYear: number,
-  nowMonth: number,
-  getYearData(year:number): void,
-  getMonthData(month:number): void
-}
-
-export function CalendarView(props:Props) {
+export function CalendarView() {
   const [monthlyCharge, setMonthlyCharge] = useState([]);
-  const [value, setValue] = useState(new Date(`${props.nowYear}-${props.nowMonth+1}-${new Date().getDate()}`));
-  const navMonth = value.getMonth();
-  const navYear = value.getFullYear();
-
+  const [today, setToday] = useRecoilState(todayAtom);
+  const navMonth = today.getMonth();
+  const navYear = today.getFullYear();
 
   //api호출
   useEffect(() => {
@@ -38,26 +32,13 @@ export function CalendarView(props:Props) {
 
   }, [navYear, navMonth]);
   
-  //CalendarSection으로 값이 바뀔 때마다 prop 재전달
-  useEffect(() => {
-    const setNowYear = () => {
-      props.getYearData(navYear);
-    };
-    const setNowMonth = () => {
-      props.getMonthData(navMonth);
-    };
-    setNowYear();
-    setNowMonth();
-  }, [navYear, navMonth])
-  
-
   return (
     <CalendarContainer>
       <Calendar
-        value={value}
+        value={today}
         calendarType={'US'}
-        onChange={(value: any) => setValue(value)}
-        onActiveStartDateChange={({ activeStartDate }: any) => setValue(activeStartDate)}
+        onChange={(value: any) => setToday(value)}
+        onActiveStartDateChange={({ activeStartDate }: any) => setToday(activeStartDate)}
         showNeighboringMonth={false}
         tileContent={({ date, view }: { date: Date; view: string }) => 
           view === 'month' && Object.keys(monthlyCharge).map(a => a === date.getDate().toString() ?
