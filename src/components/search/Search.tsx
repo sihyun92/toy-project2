@@ -25,20 +25,23 @@ const Search = ({ userId }: ISearchProps) => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   useEffect(() => {
-    const handleSearch = async () => {
+    const fetchData = async () => {
       try {
-        const data = await getSearchConsume({
-          keyword: searchText,
-          userId: "team1",
-        });
-        setSearchResults(data);
+        if (searchText) {
+          const data = await getSearchConsume({
+            keyword: searchText,
+            userId: "team1",
+          });
+          setSearchResults(data);
+        } else {
+          setSearchResults([]);
+        }
       } catch (error) {
-        console.log("Error Searching:", error);
+        console.log("Error occurred while searching:", error);
       }
     };
-
-    handleSearch();
-  }, [searchText, searchResults]);
+    fetchData();
+  }, [searchText]);
 
   const handleCloseDeleteModal = () => {
     setOpenDeleteModal(false);
@@ -79,6 +82,13 @@ const Search = ({ userId }: ISearchProps) => {
     return `${year}-${month}-${day} ${period} ${hours}:${minutes}`;
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+    if (!e.target.value) {
+      setSearchResults([]);
+    }
+  };
+
   return (
     <Container>
       <Title>내역조회</Title>
@@ -86,61 +96,51 @@ const Search = ({ userId }: ISearchProps) => {
         <SearchInput
           type="text"
           value={searchText}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setSearchText(e.target.value)
-          }
+          onChange={handleInputChange}
           placeholder="검색어를 입력하세요"
         />
         <SearchButton>검색</SearchButton>
       </SearchContainer>
-      {searchText === "" ? null : (
-        <>
-          {searchResults.length > 0 && (
-            <ResultContainer>
-              <>
-                {/* Result header */}
-                <ResultHeader>
-                  <ResultHeaderText>카테고리</ResultHeaderText>
-                  <ResultHeaderText>날짜</ResultHeaderText>
-                  <ResultHeaderText>금액</ResultHeaderText>
-                </ResultHeader>
+      {searchResults.length > 0 && (
+        <ResultContainer>
+          {/* Result header */}
+          <ResultHeader>
+            <ResultHeaderText>카테고리</ResultHeaderText>
+            <ResultHeaderText>날짜</ResultHeaderText>
+            <ResultHeaderText>금액</ResultHeaderText>
+          </ResultHeader>
 
-                {/* Result items */}
-                {searchResults.map((result, index) => (
-                  <ResultItem key={index}>
-                    <Category>{result.category}</Category>
-                    <Date>{formatDate(result.date)}</Date>
-                    <Amount>{result.amount}원</Amount>
-                    <EditButton onClick={() => handleOpenEditModal(result._id)}>
-                      <RiPencilFill />
-                    </EditButton>
-                    {openEditModal && selectedItemId === result._id && (
-                      <EditModal
-                        id={result._id}
-                        amount={result.amount}
-                        userId={result.userId}
-                        category={result.category}
-                        date={result.date}
-                        handleCloseModal={handleCloseEditModal}
-                      />
-                    )}
-                    <DeleteButton
-                      onClick={() => handleOpenDeleteModal(result._id)}
-                    >
-                      <RiDeleteBinFill />
-                    </DeleteButton>
-                    {openDeleteModal && selectedItemId === result._id && (
-                      <DeleteModal
-                        id={result._id}
-                        handleCloseModal={handleCloseDeleteModal}
-                      />
-                    )}
-                  </ResultItem>
-                ))}
-              </>
-            </ResultContainer>
-          )}
-        </>
+          {/* Result items */}
+          {searchResults.map((result, index) => (
+            <ResultItem key={index}>
+              <Category>{result.category}</Category>
+              <Date>{formatDate(result.date)}</Date>
+              <Amount>{result.amount}원</Amount>
+              <EditButton onClick={() => handleOpenEditModal(result._id)}>
+                <RiPencilFill />
+              </EditButton>
+              {openEditModal && selectedItemId === result._id && (
+                <EditModal
+                  id={result._id}
+                  amount={result.amount}
+                  userId={result.userId}
+                  category={result.category}
+                  date={result.date}
+                  handleCloseModal={handleCloseEditModal}
+                />
+              )}
+              <DeleteButton onClick={() => handleOpenDeleteModal(result._id)}>
+                <RiDeleteBinFill />
+              </DeleteButton>
+              {openDeleteModal && selectedItemId === result._id && (
+                <DeleteModal
+                  id={result._id}
+                  handleCloseModal={handleCloseDeleteModal}
+                />
+              )}
+            </ResultItem>
+          ))}
+        </ResultContainer>
       )}
     </Container>
   );
