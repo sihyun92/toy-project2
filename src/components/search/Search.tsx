@@ -38,7 +38,7 @@ const Search = ({ userId }: ISearchProps) => {
     };
 
     handleSearch();
-  }, [searchText]);
+  }, [searchText, searchResults]);
 
   const handleCloseDeleteModal = () => {
     setOpenDeleteModal(false);
@@ -93,46 +93,54 @@ const Search = ({ userId }: ISearchProps) => {
         />
         <SearchButton>검색</SearchButton>
       </SearchContainer>
-      {searchResults.length > 0 && (
-        <ResultContainer>
-          {/* Result header */}
-          <ResultHeader>
-            <ResultHeaderText>카테고리</ResultHeaderText>
-            <ResultHeaderText>날짜</ResultHeaderText>
-            <ResultHeaderText>금액</ResultHeaderText>
-          </ResultHeader>
+      {searchText === "" ? null : (
+        <>
+          {searchResults.length > 0 && (
+            <ResultContainer>
+              <>
+                {/* Result header */}
+                <ResultHeader>
+                  <ResultHeaderText>카테고리</ResultHeaderText>
+                  <ResultHeaderText>날짜</ResultHeaderText>
+                  <ResultHeaderText>금액</ResultHeaderText>
+                </ResultHeader>
 
-          {/* Result items */}
-          {searchResults.map((result, index) => (
-            <ResultItem key={index}>
-              <Category>{result.category}</Category>
-              <Date>{formatDate(result.date)}</Date>
-              <Amount>{result.amount}원</Amount>
-              <EditButton onClick={() => handleOpenEditModal(result._id)}>
-                <RiPencilFill />
-              </EditButton>
-              {openEditModal && selectedItemId === result._id && (
-                <EditModal
-                  id={result._id}
-                  amount={result.amount}
-                  userId={result.userId}
-                  category={result.category}
-                  date={result.date}
-                  handleCloseModal={handleCloseEditModal}
-                />
-              )}
-              <DeleteButton onClick={() => handleOpenDeleteModal(result._id)}>
-                <RiDeleteBinFill />
-              </DeleteButton>
-              {openDeleteModal && selectedItemId === result._id && (
-                <DeleteModal
-                  id={result._id}
-                  handleCloseModal={handleCloseDeleteModal}
-                />
-              )}
-            </ResultItem>
-          ))}
-        </ResultContainer>
+                {/* Result items */}
+                {searchResults.map((result, index) => (
+                  <ResultItem key={index}>
+                    <Category>{result.category}</Category>
+                    <Date>{formatDate(result.date)}</Date>
+                    <Amount>{result.amount}원</Amount>
+                    <EditButton onClick={() => handleOpenEditModal(result._id)}>
+                      <RiPencilFill />
+                    </EditButton>
+                    {openEditModal && selectedItemId === result._id && (
+                      <EditModal
+                        id={result._id}
+                        amount={result.amount}
+                        userId={result.userId}
+                        category={result.category}
+                        date={result.date}
+                        handleCloseModal={handleCloseEditModal}
+                      />
+                    )}
+                    <DeleteButton
+                      onClick={() => handleOpenDeleteModal(result._id)}
+                    >
+                      <RiDeleteBinFill />
+                    </DeleteButton>
+                    {openDeleteModal && selectedItemId === result._id && (
+                      <DeleteModal
+                        id={result._id}
+                        handleCloseModal={handleCloseDeleteModal}
+                      />
+                    )}
+                  </ResultItem>
+                ))}
+              </>
+            </ResultContainer>
+          )}
+        </>
       )}
     </Container>
   );
