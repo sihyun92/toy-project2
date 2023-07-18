@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getCalendarConsume } from "../../lib/api/consumeAPI";
 import { todayAtom } from "../../state/today";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { styled } from "styled-components";
 import { RiDeleteBinFill, RiPencilFill } from "react-icons/ri";
 import EditModal from "../modal/EditModal";
@@ -16,7 +16,7 @@ interface IExpense {
 }
 
 export function Today() {
-  const [today, setToday] = useRecoilState(todayAtom);
+  const today = useRecoilValue(todayAtom);
   const [todayList, setTodayList] = useState([]);
   const [openEditModal, setOpenEditModal] = useState<boolean>(false);
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
@@ -35,13 +35,12 @@ export function Today() {
         });
         const result = fetchRes.data;
         setTodayList(result[Number(nowDate)]);
-        console.log(result[Number(nowDate)]);
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
-  }, [today, todayList, nowDate, nowMonth, nowYear]);
+  }, [today, nowDate, nowMonth, nowYear]);
 
   const handleCloseDeleteModal = () => {
     setOpenDeleteModal(false);
@@ -66,19 +65,17 @@ export function Today() {
   return (
     <Container>
       <h1>
-        {nowMonth}.{nowDate}
+        {nowMonth+1}. {nowDate}
       </h1>
       <ListContainer>
         {todayList === undefined ? (
-          <div>내역없음</div>
+          <div className="nodata">내역없음</div>
         ) : (
           todayList.map((a: IExpense) => (
             <ListBox key={a._id}>
-              <TextBox>
-                <div>{a.category}</div>
-                <div>{a.amount}원</div>
-              </TextBox>
+              <div>{a.category}</div>
               <IconBox>
+                {a.amount>0?<div className="posi mount">+{a.amount}원</div>:<div className="mount">{a.amount}원</div>}
                 <EditButton onClick={() => handleOpenEditModal(a._id)}>
                   <RiPencilFill />
                 </EditButton>
@@ -117,21 +114,38 @@ const Container = styled.section`
   border-radius: 14px;
   h1 {
     font-weight: 700;
+    padding-bottom: 24px;
   }
 `;
 const ListContainer = styled.div`
   height: 9rem;
   overflow: scroll;
+  .nodata {
+    color: #ccc;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
 `;
 const ListBox = styled.div`
+  align-items: center;
   display: flex;
   justify-content: space-between;
   padding-top: 6px;
 `;
-const TextBox = styled.div`
-  display: flex;
+
+const IconBox = styled.div`
+display: flex;
+align-items: center;
+
+.mount{
+  padding-right: 16px;
+}
+.posi{
+  color: red;
+}
 `;
-const IconBox = styled.div``;
 
 const EditButton = styled.button`
   margin-left: 5px;

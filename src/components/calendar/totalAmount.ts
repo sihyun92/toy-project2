@@ -6,7 +6,7 @@ interface IExpense {
   date: string;
 }
 
-export const totalAmout = (a:IExpense[]) => {
+export const totalAmount = (a:IExpense[]) => {
   if (a === undefined) {
     return [0,0];
   }
