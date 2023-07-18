@@ -46,18 +46,17 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
     setTimeValue(value);
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = (event: any) => {
+    event.preventDefault();
     const date = moment(
       dateValue + (timeValue ? " " + timeValue : ""),
     ).format();
 
-    if (
-      (amount < 1 && amount > -1) ||
-      userId === "" ||
-      category === "" ||
-      date === ""
-    ) {
+    if (userId === "" || category === "" || date === "") {
       alert("빈칸을 모두 입력해주세요.");
+      return;
+    } else if (amount < 1 && amount > -1) {
+      alert("금액을 입력하세요.");
       return;
     }
 
@@ -135,9 +134,7 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
               <ModalButton type="button" onClick={handleCloseModal}>
                 취소
               </ModalButton>
-              <ModalButton type="submit" onClick={handleConfirm}>
-                확인
-              </ModalButton>
+              <ModalButton type="submit">확인</ModalButton>
             </ModalButtonContainer>
           </ModalForm>
         </ModalContent>
