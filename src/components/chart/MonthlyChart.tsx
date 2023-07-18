@@ -4,10 +4,11 @@ import ApexCharts from "react-apexcharts";
 interface MonthlyChartProps {
   id: string[];
   totalAmount: number[];
+  type: string;
 }
 
 // Component
-function MonthlyChart({ id, totalAmount }: MonthlyChartProps) {
+function MonthlyChart({ id, totalAmount, type }: MonthlyChartProps) {
   // Render
   return (
     <ApexCharts
@@ -22,7 +23,7 @@ function MonthlyChart({ id, totalAmount }: MonthlyChartProps) {
           },
         },
         title: {
-          text: "월별",
+          text: type,
         },
       }}
     />
