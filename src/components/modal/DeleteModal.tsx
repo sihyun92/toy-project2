@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import "react-calendar/dist/Calendar.css";
 import "react-time-picker/dist/TimePicker.css";
