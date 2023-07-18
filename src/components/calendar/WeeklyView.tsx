@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getCalendarConsume } from "../../lib/api/consumeAPI";
-import { totalAmout } from "./totalAmout";
+import { totalAmount } from "./totalAmount";
 import { styled } from "styled-components";
 import { todayAtom } from "../../state/today";
 import { useRecoilState } from "recoil";
@@ -44,8 +44,8 @@ export function WeeklyView() {
     let weekIncome = 0;
     for (let i=weekIndex[0]; i<=weekIndex[1]; i++) {
       let thisMonthDataIndex = Number(thisMonthDataKey[i]);
-      weekExpenses += totalAmout(thisMonthData[thisMonthDataIndex])[0];
-      weekIncome += totalAmout(thisMonthData[thisMonthDataIndex])[1];
+      weekExpenses += totalAmount(thisMonthData[thisMonthDataIndex])[0];
+      weekIncome += totalAmount(thisMonthData[thisMonthDataIndex])[1];
     }
     return [weekExpenses, weekIncome]
   }
@@ -117,19 +117,19 @@ margin-bottom: 16px;
   align-items: center;
   text-align: center;
   padding: 1px 6px;
-  margin-top:8px;
+  margin-top: 8px;
   color: #6f48eb;
 }
 .navTitle:hover {
   background-color: #f8f8fa;
 }
 button {
+  background: none;
   width: 44px;
   height: 36px;
   padding: 1px 6px;
   margin-top: 8px;
   font-size: 16px;
-  font-family: arial;
   color: #6f48eb;
 }
 button:hover {
@@ -138,13 +138,12 @@ button:hover {
 `
 
 const Container = styled.div`
-padding: 30px 30px;
+padding: 20px 30px 30px 30px;
 width: 30rem;
 display: flex;
 flex-wrap: wrap;
 border-radius: 8px;
 font-size: 16px;
-font-family: arial;
 `
 const WeekList = styled.div`
 height: 3.8rem;
