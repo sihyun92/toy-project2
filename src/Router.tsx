@@ -1,7 +1,7 @@
+import ErrorPage from "pages/ErrorPage";
+import MainPage from "pages/MainPage";
 import { Dispatch, SetStateAction, useCallback } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-// import ErrorPage from "./pages/ErrorPage";
-import MainPage from "./pages/MainPage";
 
 interface IRouterProps {
   theme: string;
@@ -26,7 +26,7 @@ function Router({ theme, setTheme }: IRouterProps) {
           path="/"
           element={<MainPage isLight={isLight} onToggleDark={onToggleDark} />}
         />
-        {/* <Route path="/*" element={<ErrorPage />} /> */}
+        <Route path="/*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>
   );
