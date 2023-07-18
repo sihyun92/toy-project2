@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { ThemeProvider } from "styled-components";
 import GlobalStyle from "./styles/GlobalStyle";
-import { darkTheme, lightTheme } from "styles/theme";
+import { darkTheme, lightTheme } from "./styles/theme";
 
 import { HelmetProvider } from "react-helmet-async";
 import Router from "./Router";
