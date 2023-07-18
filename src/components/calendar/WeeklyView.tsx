@@ -2,24 +2,22 @@ import { useEffect, useState } from "react";
 import { getCalendarConsume } from "../../lib/api/consumeAPI";
 import { totalAmout } from "./totalAmout";
 import { styled } from "styled-components";
+import { todayAtom } from "../../state/today";
+import { useRecoilState } from "recoil";
 
-type Props = {
-  nowYear: number,
-  nowMonth: number,
-  getYearData(year:number): void,
-  getMonthData(month:number): void
-}
-
-export function WeeklyView(props:Props) {
+export function WeeklyView() {
   const [thisMonthData, setThisMonthData] = useState([]);
-  const [navMonth, setNavMonth] = useState<number>(props.nowMonth+1);
-  const [navYear, setNavYear] = useState<number>(props.nowYear);
+  const [today, setToday] = useRecoilState(todayAtom);
+  const [navMonth, setNavMonth] = useState<number>(today.getMonth()+1);
+  const [navYear, setNavYear] = useState<number>(today.getFullYear());
+
 
   //api호출
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getCalendarConsume({ year: navYear, month: navMonth, userId: 'team1' });
+        const fetchRes = await getCalendarConsume({ year: navYear, month: navMonth, userId: 'team1' });
+        const result = fetchRes.data;
         setThisMonthData(result);
       } catch (error) {
         console.error(error);
@@ -28,16 +26,8 @@ export function WeeklyView(props:Props) {
     fetchData();
   }, [navYear, navMonth]);
 
-  //CalendarSection으로 값이 바뀔 때마다 prop 재전달
   useEffect(() => {
-    const setNowYear = () => {
-      props.getYearData(navYear);
-    };
-    const setNowMonth = () => {
-      props.getMonthData(navMonth-1);
-    };
-    setNowYear();
-    setNowMonth();
+    setToday(new Date(`${navYear}-${navMonth}-1`))
   }, [navYear, navMonth])
   
     

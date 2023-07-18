@@ -5,6 +5,7 @@ import AddModal from "./modal/AddModal";
 import Button from "./common/Button";
 import Chart from "./chart/Chart";
 import Search from "./search/Search";
+import Today from "./today/Today";
 
 function Main() {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -19,6 +20,7 @@ function Main() {
   return (
     <MainContainer>
       <Chart />
+      <Today />
       <CalendarSection />
       <Button onClick={handleOpenModal}>
         <span>+</span>
