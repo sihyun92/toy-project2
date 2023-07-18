@@ -7,16 +7,6 @@ import { WeeklyView } from "./WeeklyView";
 
 function CalendarSection() {
   const [toggleBtn, setToggleBtn] = useState(true);
-  const now = new Date();
-  const [nowYear, setNowYear] = useState(now.getFullYear());
-  const [nowMonth, setNowMonth] = useState(now.getMonth());
-
-  const getYearData = (year:number) => {
-    setNowYear(year);
-  }
-  const getMonthData = (month:number) => {
-    setNowMonth(month);
-  }
 
   return (
     <Section>
@@ -35,8 +25,8 @@ function CalendarSection() {
       </Header>
       <Container>
         {toggleBtn === true ? 
-          ( <CalendarView nowYear={nowYear} nowMonth={nowMonth} getYearData={getYearData} getMonthData={getMonthData} /> ) : 
-          ( <WeeklyView nowYear={nowYear} nowMonth={nowMonth} getYearData={getYearData} getMonthData={getMonthData} /> )
+          ( <CalendarView/> ) : 
+          ( <WeeklyView /> )
         }
       </Container>
     </Section>
@@ -45,7 +35,7 @@ function CalendarSection() {
 
 const Section = styled.section`
 width: 30rem;
-`
+`;
 
 const Header = styled.header`
 display: flex;
@@ -62,7 +52,7 @@ h2 {
     margin-left: 6px;
     padding: 4px 8px;
     border: 1px solid ${(props) => props.theme.borderColor};
-    border-radius: 6px;
+    border-radius: 8px;
     transition: .2s;
   }
   .active, button:hover {
@@ -71,14 +61,15 @@ h2 {
     color: white;
   }
 }
-`
+`;
+
 const Container = styled.div`
 display: flex;
 align-items: center;
 justify-content: center;
 overflow: hidden;
-border-radius: 8px;
+border-radius: 16px;
 box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 background-color: ${(props) => props.theme.bgColor};
-`
+`;
 export default CalendarSection;

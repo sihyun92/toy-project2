@@ -28,10 +28,12 @@ const Search = ({ userId }: ISearchProps) => {
     const fetchData = async () => {
       try {
         if (searchText) {
-          const data = await getSearchConsume({
+          const result = await getSearchConsume({
             keyword: searchText,
             userId: "team1",
           });
+        const data = result.data;
+        console.log(data);
           setSearchResults(data);
         } else {
           setSearchResults([]);
