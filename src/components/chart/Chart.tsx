@@ -18,7 +18,7 @@ const ChartContainer = styled.div`
   align-items: center;
   gap: 20px;
   background: #fff;
-  border-radius: 15px;
+  border-radius: 14px;
 `;
 
 const DummyBox = styled.div`
