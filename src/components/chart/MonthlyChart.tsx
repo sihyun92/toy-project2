@@ -18,7 +18,7 @@ function MonthlyChart({ id, totalAmount }: MonthlyChartProps) {
         dataLabels: {
           enabled: true,
           formatter: (val: number) => {
-            return `${Math.floor(val)}₩`;
+            return `${val.toLocaleString()}₩`;
           },
         },
         title: {
