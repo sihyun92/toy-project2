@@ -37,7 +37,7 @@ export function CalendarView(props:Props) {
     fetchData();
 
   }, [navYear, navMonth]);
-  
+
   //CalendarSection으로 값이 바뀔 때마다 prop 재전달
   useEffect(() => {
     const setNowYear = () => {
@@ -49,7 +49,7 @@ export function CalendarView(props:Props) {
     setNowYear();
     setNowMonth();
   }, [navYear, navMonth])
-  
+
 
   return (
     <CalendarContainer>
@@ -59,7 +59,7 @@ export function CalendarView(props:Props) {
         onChange={(value: any) => setValue(value)}
         onActiveStartDateChange={({ activeStartDate }: any) => setValue(activeStartDate)}
         showNeighboringMonth={false}
-        tileContent={({ date, view }: { date: Date; view: string }) => 
+        tileContent={({ date, view }: { date: Date; view: string }) =>
           view === 'month' && Object.keys(monthlyCharge).map(a => a === date.getDate().toString() ?
             <div key={a}>
               {totalAmout(monthlyCharge[Number(a)])[0]!==0? <p className="amout-text">{totalAmout(monthlyCharge[Number(a)])[0].toLocaleString()}</p> : null}
