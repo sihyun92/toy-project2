@@ -28,11 +28,12 @@ export function Today() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getCalendarConsume({
+        const fetchRes = await getCalendarConsume({
           year: nowYear,
           month: nowMonth + 1,
           userId: "team1",
         });
+        const result = fetchRes.data;
         setTodayList(result[Number(nowDate)]);
         console.log(result[Number(nowDate)]);
       } catch (error) {
@@ -65,38 +66,44 @@ export function Today() {
   return(
     <Container>
       <h1>{nowMonth}.{nowDate}</h1>
-      {todayList === undefined ? (
-        <div>내역없음</div>
-      ) : (
-        todayList.map((a: IExpense) => (
-          <ListBox key={a._id}>
-            <div>{a.category}</div>
-            <div>{a.amount}원</div>
-            <EditButton onClick={() => handleOpenEditModal(a._id)}>
-              <RiPencilFill />
-            </EditButton>
-            {openEditModal && selectedItemId === a._id && (
-              <EditModal
-                id={a._id}
-                amount={a.amount}
-                userId={a.userId}
-                category={a.category}
-                date={a.date}
-                handleCloseModal={handleCloseEditModal}
-              />
-            )}
-            <DeleteButton onClick={() => handleOpenDeleteModal(a._id)}>
-              <RiDeleteBinFill />
-            </DeleteButton>
-            {openDeleteModal && selectedItemId === a._id && (
-              <DeleteModal
-                id={a._id}
-                handleCloseModal={handleCloseDeleteModal}
-              />
-            )}
-          </ListBox>
-        ))
-      )}
+      <ListContainer>
+        {todayList === undefined ? (
+          <div>내역없음</div>
+        ) : (
+          todayList.map((a: IExpense) => (
+            <ListBox key={a._id}>
+              <TextBox>
+                <div>{a.category}</div>
+                <div>{a.amount}원</div>
+              </TextBox>
+              <IconBox>
+                <EditButton onClick={() => handleOpenEditModal(a._id)}>
+                    <RiPencilFill />
+                  </EditButton>
+                  {openEditModal && selectedItemId === a._id && (
+                    <EditModal
+                      id={a._id}
+                      amount={a.amount}
+                      userId={a.userId}
+                      category={a.category}
+                      date={a.date}
+                      handleCloseModal={handleCloseEditModal}
+                    />
+                  )}
+                  <DeleteButton onClick={() => handleOpenDeleteModal(a._id)}>
+                    <RiDeleteBinFill />
+                  </DeleteButton>
+                  {openDeleteModal && selectedItemId === a._id && (
+                    <DeleteModal
+                      id={a._id}
+                      handleCloseModal={handleCloseDeleteModal}
+                    />
+                  )}
+              </IconBox>
+            </ListBox>
+          ))
+        )}
+      </ListContainer>
     </Container>
   )
 }
@@ -104,13 +111,26 @@ export function Today() {
 const Container = styled.section`
 width: 30rem;
 background-color: ${(props) => props.theme.bgColor};
-padding: 30px 20px;
+padding: 30px 40px;
 border-radius: 14px;
-`
-
+h1{
+  font-weight: 700;
+}
+`;
+const ListContainer = styled.div`
+height: 9rem;
+overflow: scroll;
+`;
 const ListBox = styled.div`
 display: flex;
+justify-content: space-between;
+padding-top: 6px;
 `;
+const TextBox = styled.div`
+display: flex;
+`
+const IconBox = styled.div`
+`
 
 const EditButton = styled.button`
   margin-left: 5px;
