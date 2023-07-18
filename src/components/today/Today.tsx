@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import { getCalendarConsume } from "../../lib/api/consumeAPI";
 import { todayAtom } from "../../state/today";
 import { useRecoilState } from "recoil";
@@ -7,7 +7,7 @@ import { RiDeleteBinFill, RiPencilFill } from "react-icons/ri";
 import EditModal from "../modal/EditModal";
 import DeleteModal from "../modal/DeleteModal";
 
-interface IExpense{
+interface IExpense {
   _id: string;
   amount: number;
   userId: string;
@@ -41,7 +41,7 @@ export function Today() {
       }
     };
     fetchData();
-  }, [today, todayList]);
+  }, [today, todayList, nowDate, nowMonth, nowYear]);
 
   const handleCloseDeleteModal = () => {
     setOpenDeleteModal(false);
@@ -62,10 +62,12 @@ export function Today() {
     setOpenEditModal(false);
     setTodayList((prevResults) => [...prevResults]);
   };
-  
-  return(
+
+  return (
     <Container>
-      <h1>{nowMonth}.{nowDate}</h1>
+      <h1>
+        {nowMonth}.{nowDate}
+      </h1>
       <ListContainer>
         {todayList === undefined ? (
           <div>내역없음</div>
@@ -78,59 +80,58 @@ export function Today() {
               </TextBox>
               <IconBox>
                 <EditButton onClick={() => handleOpenEditModal(a._id)}>
-                    <RiPencilFill />
-                  </EditButton>
-                  {openEditModal && selectedItemId === a._id && (
-                    <EditModal
-                      id={a._id}
-                      amount={a.amount}
-                      userId={a.userId}
-                      category={a.category}
-                      date={a.date}
-                      handleCloseModal={handleCloseEditModal}
-                    />
-                  )}
-                  <DeleteButton onClick={() => handleOpenDeleteModal(a._id)}>
-                    <RiDeleteBinFill />
-                  </DeleteButton>
-                  {openDeleteModal && selectedItemId === a._id && (
-                    <DeleteModal
-                      id={a._id}
-                      handleCloseModal={handleCloseDeleteModal}
-                    />
-                  )}
+                  <RiPencilFill />
+                </EditButton>
+                {openEditModal && selectedItemId === a._id && (
+                  <EditModal
+                    id={a._id}
+                    amount={a.amount}
+                    userId={a.userId}
+                    category={a.category}
+                    date={a.date}
+                    handleCloseModal={handleCloseEditModal}
+                  />
+                )}
+                <DeleteButton onClick={() => handleOpenDeleteModal(a._id)}>
+                  <RiDeleteBinFill />
+                </DeleteButton>
+                {openDeleteModal && selectedItemId === a._id && (
+                  <DeleteModal
+                    id={a._id}
+                    handleCloseModal={handleCloseDeleteModal}
+                  />
+                )}
               </IconBox>
             </ListBox>
           ))
         )}
       </ListContainer>
     </Container>
-  )
+  );
 }
 
 const Container = styled.section`
-width: 30rem;
-background-color: ${(props) => props.theme.bgColor};
-padding: 30px 40px;
-border-radius: 14px;
-h1{
-  font-weight: 700;
-}
+  width: 30rem;
+  background-color: ${(props) => props.theme.bgColor};
+  padding: 30px 40px;
+  border-radius: 14px;
+  h1 {
+    font-weight: 700;
+  }
 `;
 const ListContainer = styled.div`
-height: 9rem;
-overflow: scroll;
+  height: 9rem;
+  overflow: scroll;
 `;
 const ListBox = styled.div`
-display: flex;
-justify-content: space-between;
-padding-top: 6px;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 6px;
 `;
 const TextBox = styled.div`
-display: flex;
-`
-const IconBox = styled.div`
-`
+  display: flex;
+`;
+const IconBox = styled.div``;
 
 const EditButton = styled.button`
   margin-left: 5px;
