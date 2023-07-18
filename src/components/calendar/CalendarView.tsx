@@ -30,25 +30,38 @@ export function CalendarView() {
     };
 
     fetchData();
-
   }, [navYear, navMonth]);
   return (
     <CalendarContainer>
       <Calendar
         value={today}
-        calendarType={'US'}
+        calendarType={"US"}
         onChange={(value: any) => setToday(value)}
-        onActiveStartDateChange={({ activeStartDate }: any) => setToday(activeStartDate)}
+        onActiveStartDateChange={({ activeStartDate }: any) =>
+          setToday(activeStartDate)
+        }
         showNeighboringMonth={false}
         tileContent={({ date, view }: { date: Date; view: string }) =>
-          view === 'month' && Object.keys(monthlyCharge).map(a => a === date.getDate().toString() ?
-            <div key={a}>
-              {totalAmout(monthlyCharge[Number(a)])[0]!==0? <p className="amout-text">{totalAmout(monthlyCharge[Number(a)])[0].toLocaleString()}</p> : null}
-              {totalAmout(monthlyCharge[Number(a)])[1]!==0? <p className="amout-text posi">{'+'+totalAmout(monthlyCharge[Number(a)])[1].toLocaleString()}</p> : null}
-            </div>
-            : null
-        )}
-        />
+          view === "month" &&
+          Object.keys(monthlyCharge).map((a) =>
+            a === date.getDate().toString() ? (
+              <div key={a}>
+                {totalAmout(monthlyCharge[Number(a)])[0] !== 0 ? (
+                  <p className="amout-text">
+                    {totalAmout(monthlyCharge[Number(a)])[0].toLocaleString()}
+                  </p>
+                ) : null}
+                {totalAmout(monthlyCharge[Number(a)])[1] !== 0 ? (
+                  <p className="amout-text posi">
+                    {"+" +
+                      totalAmout(monthlyCharge[Number(a)])[1].toLocaleString()}
+                  </p>
+                ) : null}
+              </div>
+            ) : null,
+          )
+        }
+      />
     </CalendarContainer>
   );
 }
@@ -73,7 +86,7 @@ const CalendarContainer = styled.div`
   .amout-text {
     color: ${(props) => props.theme.textColor};
     font-size: 12px;
-    opacity: .5;
+    opacity: 0.5;
   }
   .react-calendar__navigation button:enabled:hover,
   .react-calendar__navigation button:enabled:focus {

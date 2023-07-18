@@ -1,6 +1,12 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+  }
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   a, abbr, acronym, address, big, cite, code,
@@ -28,7 +34,7 @@ const GlobalStyle = createGlobalStyle`
     display: block;
   }
   body {
-    font-family: 'NanumSquare', sans-serif;
+    font-family: 'Pretendard-Regular', sans-serif;
     line-height: 1;
     -ms-overflow-style: none;
     ::-webkit-scrollbar {
