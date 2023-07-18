@@ -27,10 +27,12 @@ const Search = ({ userId }: ISearchProps) => {
   useEffect(() => {
     const handleSearch = async () => {
       try {
-        const data = await getSearchConsume({
+        const result = await getSearchConsume({
           keyword: searchText,
           userId: "team1",
         });
+        const data = result.data;
+        console.log(data);
         setSearchResults(data);
       } catch (error) {
         console.log("Error Searching:", error);

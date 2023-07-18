@@ -17,11 +17,12 @@ export function CalendarView() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getCalendarConsume({
+        const fetchRes = await getCalendarConsume({
           year: navYear,
           month: navMonth + 1,
           userId: "team1",
         });
+        const result = fetchRes.data;
         setMonthlyCharge(result);
       } catch (error) {
         console.error(error);

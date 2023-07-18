@@ -16,7 +16,8 @@ export function WeeklyView() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getCalendarConsume({ year: navYear, month: navMonth, userId: 'team1' });
+        const fetchRes = await getCalendarConsume({ year: navYear, month: navMonth, userId: 'team1' });
+        const result = fetchRes.data;
         setThisMonthData(result);
       } catch (error) {
         console.error(error);

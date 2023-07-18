@@ -37,14 +37,14 @@ interface IGetSearchConsume {
   keyword: string;
   userId: string;
 }
-export const getSearchConsume = async ({
+export const getSearchConsume = ({
   keyword,
   userId,
 }: IGetSearchConsume) => {
-  const result = await client.get(
+  const result = client.get(
     `api/expenses/search?q=${keyword}&userId=${userId}`,
   );
-  return result.data;
+  return result;
 };
 
 // 일별, 주별, 월별 소비 조회 API(GET)
@@ -89,13 +89,13 @@ interface IGetCalendarConsume {
   month: number;
   userId: string;
 }
-export const getCalendarConsume = async ({
+export const getCalendarConsume = ({
   year,
   month,
   userId,
 }: IGetCalendarConsume) => {
-  const response = await client.get(
+  const response = client.get(
     `/api/expenses/calendar?year=${year}&month=${month}&userId=${userId}`,
   );
-  return response.data;
+  return response;
 };
