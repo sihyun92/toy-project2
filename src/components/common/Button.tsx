@@ -9,12 +9,13 @@ function Button({ ...rest }: IButtonProps) {
 }
 
 const StyledButton = styled.button`
-  border: none;
-  outline: none;
+  /* border: none;
+  outline: none; */
   cursor: pointer;
   border-radius: 8px;
   background: ${(props) => props.theme.buttonColor};
   color: ${(props) => props.theme.buttonTextColor};
+  border: 1px solid ${(props) => props.theme.borderColor};
   width: 200px;
   height: 40px;
   font-size: 20px;
