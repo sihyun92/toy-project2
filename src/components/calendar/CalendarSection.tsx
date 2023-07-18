@@ -6,16 +6,6 @@ import { WeeklyView } from "./WeeklyView";
 
 function CalendarSection() {
   const [toggleBtn, setToggleBtn] = useState(true);
-  const now = new Date();
-  const [nowYear, setNowYear] = useState(now.getFullYear());
-  const [nowMonth, setNowMonth] = useState(now.getMonth());
-
-  const getYearData = (year: number) => {
-    setNowYear(year);
-  };
-  const getMonthData = (month: number) => {
-    setNowMonth(month);
-  };
 
   return (
     <Section>
@@ -53,7 +43,8 @@ const Header = styled.header`
   justify-content: space-between;
   height: 3rem;
   width: 100%;
-  padding: 0 10px;
+  padding: 24px 28px;
+  border-bottom: 1px solid ${(props) => props.theme.borderColor};
   h2 {
     font-weight: 700;
   }
@@ -61,13 +52,14 @@ const Header = styled.header`
     button {
       margin-left: 6px;
       padding: 4px 8px;
+      background-color: ${(props) => props.theme.containerBoxColor};
       border: 1px solid ${(props) => props.theme.borderColor};
       border-radius: 8px;
       transition: 0.2s;
     }
     .active,
     button:hover {
-      background-color: #6f48eb;
+      background-color: ${(props) => props.theme.buttonColor};
       border: 1px solid #6f48eb;
       color: white;
     }
@@ -79,7 +71,5 @@ const Container = styled.div`
   justify-content: center;
   overflow: hidden;
   border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  background-color: ${(props) => props.theme.bgColor};
 `;
 export default CalendarSection;

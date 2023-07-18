@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { getCalendarConsume } from "../../lib/api/consumeAPI";
-import { totalAmout } from "./totalAmout";
+import { totalAmount } from "./totalAmount";
 import { useRecoilState } from "recoil";
 import { todayAtom } from "../../state/today";
 
@@ -28,7 +28,6 @@ export function CalendarView() {
         console.error(error);
       }
     };
-
     fetchData();
   }, [navYear, navMonth]);
   return (
@@ -46,15 +45,15 @@ export function CalendarView() {
           Object.keys(monthlyCharge).map((a) =>
             a === date.getDate().toString() ? (
               <div key={a}>
-                {totalAmout(monthlyCharge[Number(a)])[0] !== 0 ? (
-                  <p className="amout-text">
-                    {totalAmout(monthlyCharge[Number(a)])[0].toLocaleString()}
+                {totalAmount(monthlyCharge[Number(a)])[0] !== 0 ? (
+                  <p className="amount-text">
+                    {totalAmount(monthlyCharge[Number(a)])[0].toLocaleString()}
                   </p>
                 ) : null}
-                {totalAmout(monthlyCharge[Number(a)])[1] !== 0 ? (
-                  <p className="amout-text posi">
+                {totalAmount(monthlyCharge[Number(a)])[1] !== 0 ? (
+                  <p className="amount-text posi">
                     {"+" +
-                      totalAmout(monthlyCharge[Number(a)])[1].toLocaleString()}
+                      totalAmount(monthlyCharge[Number(a)])[1].toLocaleString()}
                   </p>
                 ) : null}
               </div>
@@ -68,25 +67,29 @@ export function CalendarView() {
 
 const CalendarContainer = styled.div`
   .react-calendar {
-    padding: 30px 20px 40px 20px;
+    padding: 20px 20px 40px 20px;
     border: 0;
     width: 100%;
-    background-color: ${(props) => props.theme.bgColor};
+    background-color: ${(props) => props.theme.containerBoxColor};
     color: #222;
-    font-family: Arial, Helvetica, sans-serif;
     line-height: 1.4em;
   }
   .react-calendar__navigation button {
+    font-family: 'Pretendard-Regular', sans-serif;
+
     color: #6f48eb;
     min-width: 44px;
     background: none;
     font-size: 16px;
     margin-top: 8px;
   }
-  .amout-text {
+  .amount-text {
     color: ${(props) => props.theme.textColor};
     font-size: 12px;
     opacity: 0.5;
+  }
+  .react-calendar__month-view__weekdays__weekday {
+    color: #666;
   }
   .react-calendar__navigation button:enabled:hover,
   .react-calendar__navigation button:enabled:focus {
@@ -99,6 +102,8 @@ const CalendarContainer = styled.div`
     text-decoration: none;
   }
   .react-calendar__tile {
+    font-family: 'Pretendard-Regular', sans-serif;
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -140,7 +145,7 @@ const CalendarContainer = styled.div`
     border-radius: 6px;
     font-weight: bold;
     color: white;
-    .amout-text {
+    .amount-text {
       color: white;
     }
   }
