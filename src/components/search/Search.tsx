@@ -17,7 +17,7 @@ interface ISearchResultProps {
   _id: string;
 }
 
-const Search = ({ userId }: ISearchProps) => {
+function Search({ userId }: ISearchProps) {
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState<ISearchResultProps[]>([]);
   const [openEditModal, setOpenEditModal] = useState<boolean>(false);
@@ -30,7 +30,7 @@ const Search = ({ userId }: ISearchProps) => {
         if (searchText) {
           const result = await getSearchConsume({
             keyword: searchText,
-            userId: "team1",
+            userId: userId,
           });
           const data = result.data;
           console.log(data);
@@ -43,7 +43,7 @@ const Search = ({ userId }: ISearchProps) => {
       }
     };
     fetchData();
-  }, [searchText, searchResults]);
+  }, [searchText, searchResults, userId]);
 
   const handleCloseDeleteModal = () => {
     setOpenDeleteModal(false);
@@ -152,7 +152,7 @@ const Search = ({ userId }: ISearchProps) => {
       )}
     </Container>
   );
-};
+}
 
 const Container = styled.div`
   max-width: 600px;
