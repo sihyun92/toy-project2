@@ -43,7 +43,7 @@ function Main() {
       </ContainerFlex>
 
       <ContainerBox>
-        <Search userId="user123" />
+        <Search userId="team1" />
       </ContainerBox>
     </MainContainer>
   );
