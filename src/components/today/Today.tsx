@@ -112,7 +112,7 @@ export function Today() {
 
 const Container = styled.section`
   width: 30rem;
-  background-color: ${(props) => props.theme.bgColor};
+  background-color: ${(props) => props.theme.containerBoxColor};
   padding: 30px 40px;
   border-radius: 14px;
   h1 {

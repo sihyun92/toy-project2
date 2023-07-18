@@ -1,12 +1,21 @@
 import styled from "styled-components";
 import { useState } from "react";
-import 'react-calendar/dist/Calendar.css';
+import "react-calendar/dist/Calendar.css";
 import { CalendarView } from "./CalendarView";
 import { WeeklyView } from "./WeeklyView";
 
-
 function CalendarSection() {
   const [toggleBtn, setToggleBtn] = useState(true);
+  const now = new Date();
+  const [nowYear, setNowYear] = useState(now.getFullYear());
+  const [nowMonth, setNowMonth] = useState(now.getMonth());
+
+  const getYearData = (year: number) => {
+    setNowYear(year);
+  };
+  const getMonthData = (month: number) => {
+    setNowMonth(month);
+  };
 
   return (
     <Section>
@@ -15,61 +24,62 @@ function CalendarSection() {
         <div className="buttonContainer">
           <button
             onClick={() => setToggleBtn(false)}
-            className={toggleBtn===false?'active':''}
-          >주간별</button>
-          <button 
-          onClick={() => setToggleBtn(true)}
-          className={toggleBtn===true?'active':''}
-          >월별</button>
+            className={toggleBtn === false ? "active" : ""}
+          >
+            주간별
+          </button>
+          <button
+            onClick={() => setToggleBtn(true)}
+            className={toggleBtn === true ? "active" : ""}
+          >
+            월별
+          </button>
         </div>
       </Header>
       <Container>
-        {toggleBtn === true ? 
-          ( <CalendarView/> ) : 
-          ( <WeeklyView /> )
-        }
+        {toggleBtn === true ? <CalendarView /> : <WeeklyView />}
       </Container>
     </Section>
   );
 }
 
 const Section = styled.section`
-width: 30rem;
+  width: 30rem;
 `;
 
 const Header = styled.header`
-display: flex;
-align-items: center;
-justify-content: space-between;
-height: 3rem;
-width: 100%;
-padding: 0 10px;
-h2 {
-  font-weight: 700;
-}
-.buttonContainer {
-  button {
-    margin-left: 6px;
-    padding: 4px 8px;
-    border: 1px solid ${(props) => props.theme.borderColor};
-    border-radius: 8px;
-    transition: .2s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 3rem;
+  width: 100%;
+  padding: 0 10px;
+  h2 {
+    font-weight: 700;
   }
-  .active, button:hover {
-    background-color: #6f48eb;
-    border: 1px solid #6f48eb;
-    color: white;
+  .buttonContainer {
+    button {
+      margin-left: 6px;
+      padding: 4px 8px;
+      border: 1px solid ${(props) => props.theme.borderColor};
+      border-radius: 8px;
+      transition: 0.2s;
+    }
+    .active,
+    button:hover {
+      background-color: #6f48eb;
+      border: 1px solid #6f48eb;
+      color: white;
+    }
   }
-}
 `;
-
 const Container = styled.div`
-display: flex;
-align-items: center;
-justify-content: center;
-overflow: hidden;
-border-radius: 16px;
-box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-background-color: ${(props) => props.theme.bgColor};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  background-color: ${(props) => props.theme.bgColor};
 `;
 export default CalendarSection;

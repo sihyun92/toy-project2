@@ -115,13 +115,13 @@ function EditModal({
           </ModalHeader>
           <ModalForm>
             <ModalAmountWrap>
-              <button type="button" onClick={() => handleConvert("+")}>
+              <ModalAmountBtn type="button" onClick={() => handleConvert("+")}>
                 <FiPlus />
-              </button>
+              </ModalAmountBtn>
 
-              <button type="button" onClick={() => handleConvert("-")}>
+              <ModalAmountBtn type="button" onClick={() => handleConvert("-")}>
                 <FiMinus />
-              </button>
+              </ModalAmountBtn>
 
               <ModalInputAmount
                 name="amount"
@@ -184,6 +184,7 @@ const ModalHeader = styled.div`
   height: 50px;
 `;
 const ModalTitle = styled.h1`
+  color: #000;
   font-size: 2rem;
 `;
 const ModalOverlay = styled.div`
@@ -219,11 +220,17 @@ const ModalCloseButton = styled.button`
   top: -5px;
   right: -10px;
   font-size: 2rem;
+  background-color: rgba(0, 0, 0, 0);
+  color: #000;
 `;
 const ModalAmountWrap = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+`;
+const ModalAmountBtn = styled.button`
+  background-color: rgba(0, 0, 0, 0);
+  color: #000;
 `;
 const ModalInput = styled.input`
   height: 30px;
@@ -247,6 +254,8 @@ const ModalButtonContainer = styled.div`
 
 const ModalButton = styled.button`
   margin-left: 10px;
+  background-color: rgba(0, 0, 0, 0);
+  color: #000;
 `;
 
 export default EditModal;
