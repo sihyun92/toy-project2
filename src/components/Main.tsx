@@ -6,7 +6,7 @@ import Chart from "./chart/Chart";
 import Search from "./search/Search";
 import Today from "./today/Today";
 import ContainerBox from "./common/ContainerBox";
-
+// Todo: Chart type 지정
 function Main() {
   const [openModal, setOpenModal] = useState<boolean>(false);
 
