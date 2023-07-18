@@ -28,9 +28,9 @@ export function WeeklyView() {
 
   useEffect(() => {
     setToday(new Date(`${navYear}-${navMonth}-1`))
-  }, [navYear, navMonth])
-  
-    
+  }, [navYear, navMonth, setToday])
+
+
   const thisMonthDataKey = Object.keys(thisMonthData); //thisMonthData의 key값을 배열로 받아옴
   const nowMonthFirst = new Date(navYear, navMonth-1, 1).getDay(); //해당 달 1일의 요일을 받아옴
   const nowMonthLastDate = new Date(navYear, navMonth, 0).getDate(); //해당 달의 마지막 일을 받아옴
