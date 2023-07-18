@@ -24,12 +24,9 @@ export const postConsume = async ({
 };
 
 // 소비 품목 API(GET)
-interface IGetConsume {
-  userId: string;
-}
-export const getConsume = async ({ userId }: IGetConsume) => {
-  const result = await client.get(`api/categories?userId=${userId}`);
-  return result.data;
+export const getConsume = (userId: string) => {
+  const result = client.get(`api/categories?userId=${userId}`);
+  return result;
 };
 
 // 검색어에 해당하는 소비 항목 및 금액 조회 API(GET)
