@@ -19,7 +19,6 @@ export const postConsume = async ({
     category,
     date,
   });
-  console.log(result.data);
   return result.data;
 };
 
@@ -34,10 +33,7 @@ interface IGetSearchConsume {
   keyword: string;
   userId: string;
 }
-export const getSearchConsume = ({
-  keyword,
-  userId,
-}: IGetSearchConsume) => {
+export const getSearchConsume = ({ keyword, userId }: IGetSearchConsume) => {
   const result = client.get(
     `api/expenses/search?q=${keyword}&userId=${userId}`,
   );

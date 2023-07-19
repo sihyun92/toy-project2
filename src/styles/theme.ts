@@ -17,7 +17,7 @@ export const lightTheme: DefaultTheme = {
 export const darkTheme: DefaultTheme = {
   bgColor: "#000",
   textColor: "#fff",
-  containerBoxColor: "#222224",
+  containerBoxColor: "#2f2f33",
   buttonColor: "#a55eea",
   borderColor: "#a55eea",
   buttonTextColor: "#fff",

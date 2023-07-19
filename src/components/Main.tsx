@@ -19,10 +19,6 @@ function Main() {
 
   return (
     <MainContainer>
-      <ContainerBox>
-        <Chart />
-      </ContainerBox>
-
       <ContainerFlex>
         <ContainerFlexCol>
           <ContainerBox>
@@ -34,6 +30,9 @@ function Main() {
           </ContainerBox>
           <ContainerBox>
             <Today />
+          </ContainerBox>
+          <ContainerBox>
+            <Chart />
           </ContainerBox>
         </ContainerFlexCol>
 
@@ -51,6 +50,7 @@ function Main() {
 
 const MainContainer = styled.div`
   width: 100%;
+  margin-top: 2rem;
   padding: 0 20px;
   display: flex;
   flex-direction: column;
@@ -74,7 +74,6 @@ const AddButton = styled.button`
   border-radius: 14px;
   font-size: 1.5rem;
   height: 50px;
-  background-color: ${(props) => props.theme.containerBoxColor};
-  border: 1px solid ${(props) => props.theme.borderColor};
+  background-color: ${(props) => props.theme.buttonColor};
 `;
 export default Main;
