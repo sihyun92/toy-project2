@@ -60,7 +60,7 @@ const Header = styled.header`
     .active,
     button:hover {
       background-color: ${(props) => props.theme.buttonColor};
-      border: 1px solid #6f48eb;
+      border: 1px solid #a55eea;
       color: white;
     }
   }

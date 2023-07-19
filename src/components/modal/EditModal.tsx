@@ -33,8 +33,6 @@ function EditModal({
     date ? moment(date).format("HH:mm") : "",
   );
 
-  console.log("내가 찍은 내역", id, amount, userId, category, date);
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target as HTMLInputElement;
     if (name === "amount") {
@@ -74,14 +72,6 @@ function EditModal({
         editDateValue + (editTimeValue ? " " + editTimeValue : ""),
       ).format(),
     };
-    console.log(
-      "내가 바꾼 내역",
-      editedConsume.id,
-      editedConsume.amount,
-      editedConsume.userId,
-      editedConsume.category,
-      editedConsume.date,
-    );
 
     if (
       editedConsume.amount === 0 ||
@@ -99,7 +89,7 @@ function EditModal({
       userId: editedConsume.userId,
       category: editedConsume.category,
       date: editedConsume.date,
-    }); //수정하는 api함수
+    });
     handleCloseModal();
   };
 

@@ -65,7 +65,7 @@ export function Today() {
   return (
     <Container>
       <h1>
-        {nowMonth+1}. {nowDate}
+        {nowMonth + 1}. {nowDate}
       </h1>
       <ListContainer>
         {todayList === undefined ? (
@@ -75,7 +75,11 @@ export function Today() {
             <ListBox key={a._id}>
               <div>{a.category}</div>
               <IconBox>
-                {a.amount>0?<div className="posi mount">+{a.amount}원</div>:<div className="mount">{a.amount}원</div>}
+                {a.amount > 0 ? (
+                  <div className="posi mount">+{a.amount}원</div>
+                ) : (
+                  <div className="mount">{a.amount}원</div>
+                )}
                 <EditButton onClick={() => handleOpenEditModal(a._id)}>
                   <RiPencilFill />
                 </EditButton>
@@ -126,7 +130,7 @@ const ListContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    }
+  }
 `;
 const ListBox = styled.div`
   align-items: center;
@@ -136,15 +140,15 @@ const ListBox = styled.div`
 `;
 
 const IconBox = styled.div`
-display: flex;
-align-items: center;
+  display: flex;
+  align-items: center;
 
-.mount{
-  padding-right: 16px;
-}
-.posi{
-  color: red;
-}
+  .mount {
+    padding-right: 16px;
+  }
+  .posi {
+    color: #a55eea;
+  }
 `;
 
 const EditButton = styled.button`
