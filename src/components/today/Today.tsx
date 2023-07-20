@@ -23,8 +23,6 @@ interface IExpense {
 export function Today() {
   const today = useRecoilValue(todayAtom);
   const addValue = useRecoilValue(openModalAtom);
-  const editValue = useRecoilValue(openEditModalAtom);
-  const deleteValue = useRecoilValue(openDeleteModalAtom);
   const [todayList, setTodayList] = useState([]);
   const [openEditModal, setOpenEditModal] = useRecoilState(openEditModalAtom);
   const [openDeleteModal, setOpenDeleteModal] =
@@ -48,8 +46,16 @@ export function Today() {
         console.error(error);
       }
     };
-    fetchData();
-  }, [editValue, deleteValue, addValue, today, nowDate, nowMonth, nowYear]);
+    setTimeout(() => fetchData(), 5);
+  }, [
+    openEditModal,
+    openDeleteModal,
+    addValue,
+    today,
+    nowDate,
+    nowMonth,
+    nowYear,
+  ]);
 
   const handleCloseDeleteModal = () => {
     setOpenDeleteModal(false);
