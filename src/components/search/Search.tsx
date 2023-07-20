@@ -42,7 +42,9 @@ function Search({ userId }: ISearchProps) {
         console.log("Error occurred while searching:", error);
       }
     };
-    fetchData();
+    return () => {
+      fetchData();
+    };
   }, [searchText, searchResults, userId]);
 
   const handleCloseDeleteModal = () => {

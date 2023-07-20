@@ -4,7 +4,7 @@ import "react-calendar/dist/Calendar.css";
 import "react-time-picker/dist/TimePicker.css";
 import { postConsume } from "../../lib/api/consumeAPI";
 import { FiPlus, FiMinus, FiX } from "react-icons/fi";
-import moment from "moment";
+import moment from "moment"
 
 interface IAddModalProps {
   handleCloseModal: () => void;

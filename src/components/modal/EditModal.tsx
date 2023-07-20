@@ -5,6 +5,7 @@ import "react-time-picker/dist/TimePicker.css";
 import { putEditConsume } from "../../lib/api/consumeAPI";
 import { FiPlus, FiMinus, FiX } from "react-icons/fi";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 interface IEditModalProps {
   id: string;
@@ -109,7 +110,7 @@ function EditModal({
         <ModalContent>
           <ModalHeader>
             <ModalTitle>내역 수정</ModalTitle>
-            <ModalCloseButton onClick={handleCloseModal}>
+            <ModalCloseButton>
               <FiX />
             </ModalCloseButton>
           </ModalHeader>
