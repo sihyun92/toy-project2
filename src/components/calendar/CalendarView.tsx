@@ -36,7 +36,7 @@ export function CalendarView() {
         console.error(error);
       }
     };
-    fetchData();
+    setTimeout(() => fetchData(), 5);
   }, [navYear, navMonth, addValue, editValue, deleteValue]);
 
   return (

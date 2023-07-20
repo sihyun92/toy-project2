@@ -26,8 +26,6 @@ interface ISearchResultProps {
 
 function Search({ userId }: ISearchProps) {
   const addValue = useRecoilValue(openModalAtom);
-  const editValue = useRecoilValue(openEditModalAtom);
-  const deleteValue = useRecoilValue(openDeleteModalAtom);
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState<ISearchResultProps[]>([]);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
@@ -44,7 +42,6 @@ function Search({ userId }: ISearchProps) {
             userId: userId,
           });
           const data = result.data;
-          console.log(data);
           setSearchResults(data);
         } else {
           setSearchResults([]);
@@ -53,8 +50,8 @@ function Search({ userId }: ISearchProps) {
         console.log("Error occurred while searching:", error);
       }
     };
-    fetchData();
-  }, [searchText, userId, addValue, editValue, deleteValue]);
+    setTimeout(() => fetchData(), 5);
+  }, [searchText, userId, addValue, openEditModal, openDeleteModal]);
 
   const handleCloseDeleteModal = () => {
     setOpenDeleteModal(false);
