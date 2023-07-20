@@ -93,7 +93,9 @@ function Search({ userId }: ISearchProps) {
         />
         <SearchButton>검색</SearchButton>
       </SearchContainer>
-      {searchText === "" ? null : (
+      {searchText === "" ? (
+        <NoResultText>내역조회 결과가 없습니다.</NoResultText>
+      ) : (
         <>
           {searchResults.length > 0 && (
             <ResultContainer>
@@ -102,6 +104,7 @@ function Search({ userId }: ISearchProps) {
                 <ResultHeaderText>카테고리</ResultHeaderText>
                 <ResultHeaderText>날짜</ResultHeaderText>
                 <ResultHeaderText>금액</ResultHeaderText>
+                <ResultHeaderText>수정 / 삭제</ResultHeaderText>{" "}
               </ResultHeader>
 
               {/* Result items */}
@@ -110,30 +113,32 @@ function Search({ userId }: ISearchProps) {
                   <Category>{result.category}</Category>
                   <Date>{formatDate(result.date)}</Date>
                   <Amount>{result.amount}원</Amount>
-                  <EditButton onClick={() => handleOpenEditModal(result._id)}>
-                    <RiPencilFill />
-                  </EditButton>
-                  {openEditModal && selectedItemId === result._id && (
-                    <EditModal
-                      id={result._id}
-                      amount={result.amount}
-                      userId={result.userId}
-                      category={result.category}
-                      date={result.date}
-                      handleCloseModal={handleCloseEditModal}
-                    />
-                  )}
-                  <DeleteButton
-                    onClick={() => handleOpenDeleteModal(result._id)}
-                  >
-                    <RiDeleteBinFill />
-                  </DeleteButton>
-                  {openDeleteModal && selectedItemId === result._id && (
-                    <DeleteModal
-                      id={result._id}
-                      handleCloseModal={handleCloseDeleteModal}
-                    />
-                  )}
+                  <ButtonsContainer>
+                    <EditButton onClick={() => handleOpenEditModal(result._id)}>
+                      <RiPencilFill />
+                    </EditButton>
+                    {openEditModal && selectedItemId === result._id && (
+                      <EditModal
+                        id={result._id}
+                        amount={result.amount}
+                        userId={result.userId}
+                        category={result.category}
+                        date={result.date}
+                        handleCloseModal={handleCloseEditModal}
+                      />
+                    )}
+                    <DeleteButton
+                      onClick={() => handleOpenDeleteModal(result._id)}
+                    >
+                      <RiDeleteBinFill />
+                    </DeleteButton>
+                    {openDeleteModal && selectedItemId === result._id && (
+                      <DeleteModal
+                        id={result._id}
+                        handleCloseModal={handleCloseDeleteModal}
+                      />
+                    )}
+                  </ButtonsContainer>
                 </ResultItem>
               ))}
             </ResultContainer>
@@ -182,46 +187,57 @@ const SearchButton = styled(Button)`
 const ResultContainer = styled.div`
   width: 100%;
   border: 1px solid ${(props) => props.theme.borderColor};
-  border-radius: 5px;
+  border-radius: 8px;
   padding: 10px;
   margin-top: 20px;
+  flex-direction: column;
 `;
 
 const ResultHeader = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
   align-items: center;
-  margin-bottom: 10px;
+  padding: 10px 0;
   border-bottom: 1px solid ${(props) => props.theme.borderColor};
-  padding-bottom: 10px;
+  & > :first-child {
+    margin-left: 10px; /* 원하는 마진 값을 적용하세요 */
+  }
 `;
 
 const ResultHeaderText = styled.div`
-  flex: 1;
   font-weight: bold;
   text-align: left;
+  margin-bottom: 5px;
 `;
 
 const ResultItem = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto auto;
   align-items: center;
-  margin-bottom: 10px;
+  padding: 10px 0;
   border-bottom: 1px solid ${(props) => props.theme.borderColor};
-  padding-bottom: 10px;
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
 `;
 
 const Category = styled.div`
-  flex: 1;
+  margin-left: 10px;
   text-align: left;
 `;
 
 const Date = styled.div`
-  flex: 1;
   text-align: left;
 `;
 
 const Amount = styled.div`
-  flex: 1;
   text-align: left;
+`;
+
+const ButtonsContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
 `;
 
 const EditButton = styled.button`
@@ -238,6 +254,13 @@ const DeleteButton = styled.button`
   border: none;
   background-color: transparent;
   cursor: pointer;
+`;
+
+const NoResultText = styled.div`
+  text-align: center;
+  font-size: 18px;
+  margin-top: 20px;
+  color: #555; /* 원하는 색상으로 변경 가능 */
 `;
 
 export default Search;
