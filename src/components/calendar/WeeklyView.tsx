@@ -3,11 +3,19 @@ import { getCalendarConsume } from "../../lib/api/consumeAPI";
 import { totalAmount } from "./totalAmount";
 import { styled } from "styled-components";
 import { todayAtom } from "../../state/today";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  OpenModalAtom,
+  openDeleteModalAtom,
+  openEditModalAtom,
+} from "../../state/modalClose";
 
 export function WeeklyView() {
   const [thisMonthData, setThisMonthData] = useState([]);
   const [today, setToday] = useRecoilState(todayAtom);
+  const addValue = useRecoilValue(OpenModalAtom);
+  const editValue = useRecoilValue(openEditModalAtom);
+  const deleteValue = useRecoilValue(openDeleteModalAtom);
   const [navMonth, setNavMonth] = useState<number>(today.getMonth() + 1);
   const [navYear, setNavYear] = useState<number>(today.getFullYear());
 
@@ -27,7 +35,7 @@ export function WeeklyView() {
       }
     };
     fetchData();
-  }, [navYear, navMonth]);
+  }, [navYear, navMonth, addValue, editValue, deleteValue]);
 
   useEffect(() => {
     setToday(new Date(`${navYear}-${navMonth}-1`));
