@@ -17,7 +17,7 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
   const [dateValue, setDateValue] = useState<string>("");
   const [timeValue, setTimeValue] = useState<string>("");
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target as HTMLInputElement;
     if (name === "amount") {
       if (!isNaN(Number(value))) {
@@ -92,7 +92,7 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
               <ModalInputAmount
                 name="amount"
                 value={amount}
-                onChange={onChange}
+                onChange={handleChange}
                 placeholder="금액"
                 required
               />
@@ -102,7 +102,7 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
               type="text"
               name="userId"
               value={userId}
-              onChange={onChange}
+              onChange={handleChange}
               placeholder="이름"
               required
             />
@@ -110,7 +110,7 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
               type="text"
               name="category"
               value={category}
-              onChange={onChange}
+              onChange={handleChange}
               placeholder="카테고리"
               required
             />

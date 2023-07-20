@@ -1,14 +1,16 @@
 import styled from "styled-components";
 import CalendarSection from "./calendar/CalendarSection";
-import { useState } from "react";
 import AddModal from "./modal/AddModal";
 import Chart from "./chart/Chart";
 import Search from "./search/Search";
 import Today from "./today/Today";
 import ContainerBox from "./common/ContainerBox";
+import { useRecoilState } from "recoil";
+import { openModalAtom } from "../state/modalClose";
+
 // Todo: Chart type 지정
 function Main() {
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [openModal, setOpenModal] = useRecoilState(openModalAtom);
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -19,10 +21,6 @@ function Main() {
 
   return (
     <MainContainer>
-      <ContainerBox>
-        <Chart />
-      </ContainerBox>
-
       <ContainerFlex>
         <ContainerFlexCol>
           <ContainerBox>
@@ -34,6 +32,9 @@ function Main() {
           </ContainerBox>
           <ContainerBox>
             <Today />
+          </ContainerBox>
+          <ContainerBox>
+            <Chart />
           </ContainerBox>
         </ContainerFlexCol>
 
@@ -51,6 +52,7 @@ function Main() {
 
 const MainContainer = styled.div`
   width: 100%;
+  margin-top: 2rem;
   padding: 0 20px;
   display: flex;
   flex-direction: column;
@@ -74,7 +76,6 @@ const AddButton = styled.button`
   border-radius: 14px;
   font-size: 1.5rem;
   height: 50px;
-  background-color: ${(props) => props.theme.containerBoxColor};
-  border: 1px solid ${(props) => props.theme.borderColor};
+  background-color: ${(props) => props.theme.buttonColor};
 `;
 export default Main;

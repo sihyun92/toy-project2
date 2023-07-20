@@ -46,7 +46,15 @@ const HeaderToggleBtn = styled.button`
 `;
 
 const HeaderTitle = styled.h1`
-  font-size: 40px;
+  @font-face {
+    font-family: "HakgyoansimGaeulsopungB";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/HakgyoansimGaeulsopungB.woff2")
+      format("woff2");
+    font-weight: 700;
+    font-style: normal;
+  }
+  font-family: "HakgyoansimGaeulsopungB", sans-serif;
+  font-size: 4rem;
   color: #a55eea;
 `;
 export default Header;

@@ -5,6 +5,13 @@ import Button from "../common/Button";
 import { RiPencilFill, RiDeleteBinFill } from "react-icons/ri";
 import EditModal from "../modal/EditModal";
 import DeleteModal from "../modal/DeleteModal";
+import { formatDate } from "../../utils/util";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  openModalAtom,
+  openDeleteModalAtom,
+  openEditModalAtom,
+} from "../../state/modalClose";
 
 interface ISearchProps {
   userId: string;
@@ -18,11 +25,15 @@ interface ISearchResultProps {
 }
 
 function Search({ userId }: ISearchProps) {
+  const addValue = useRecoilValue(openModalAtom);
+  const editValue = useRecoilValue(openEditModalAtom);
+  const deleteValue = useRecoilValue(openDeleteModalAtom);
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState<ISearchResultProps[]>([]);
-  const [openEditModal, setOpenEditModal] = useState<boolean>(false);
-  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const [openEditModal, setOpenEditModal] = useRecoilState(openEditModalAtom);
+  const [openDeleteModal, setOpenDeleteModal] =
+    useRecoilState(openDeleteModalAtom);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,14 +53,11 @@ function Search({ userId }: ISearchProps) {
         console.log("Error occurred while searching:", error);
       }
     };
-    return () => {
-      fetchData();
-    };
-  }, [searchText, searchResults, userId]);
+    fetchData();
+  }, [searchText, userId, addValue, editValue, deleteValue]);
 
   const handleCloseDeleteModal = () => {
     setOpenDeleteModal(false);
-    setSearchResults((prevResults) => [...prevResults]);
   };
 
   const handleOpenDeleteModal = (_id: string) => {
@@ -64,26 +72,6 @@ function Search({ userId }: ISearchProps) {
 
   const handleCloseEditModal = () => {
     setOpenEditModal(false);
-    setSearchResults((prevResults) => [...prevResults]);
-  };
-
-  const formatDate = (dateString: string) => {
-    const date = new window.Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    let hours = String(date.getHours());
-    let minutes = String(date.getMinutes());
-    let period = "오전";
-
-    if (date.getHours() >= 12) {
-      period = "오후";
-      hours = String(date.getHours() - 12);
-    }
-    hours = hours.padStart(2, "0");
-    minutes = minutes.padStart(2, "0");
-
-    return `${year}-${month}-${day} ${period} ${hours}:${minutes}`;
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,7 +93,9 @@ function Search({ userId }: ISearchProps) {
         />
         <SearchButton>검색</SearchButton>
       </SearchContainer>
-      {searchText === "" ? null : (
+      {searchText === "" ? (
+        <NoResultText>내역조회 결과가 없습니다.</NoResultText>
+      ) : (
         <>
           {searchResults.length > 0 && (
             <ResultContainer>
@@ -114,6 +104,7 @@ function Search({ userId }: ISearchProps) {
                 <ResultHeaderText>카테고리</ResultHeaderText>
                 <ResultHeaderText>날짜</ResultHeaderText>
                 <ResultHeaderText>금액</ResultHeaderText>
+                <ResultHeaderText>수정 / 삭제</ResultHeaderText>{" "}
               </ResultHeader>
 
               {/* Result items */}
@@ -122,30 +113,32 @@ function Search({ userId }: ISearchProps) {
                   <Category>{result.category}</Category>
                   <Date>{formatDate(result.date)}</Date>
                   <Amount>{result.amount}원</Amount>
-                  <EditButton onClick={() => handleOpenEditModal(result._id)}>
-                    <RiPencilFill />
-                  </EditButton>
-                  {openEditModal && selectedItemId === result._id && (
-                    <EditModal
-                      id={result._id}
-                      amount={result.amount}
-                      userId={result.userId}
-                      category={result.category}
-                      date={result.date}
-                      handleCloseModal={handleCloseEditModal}
-                    />
-                  )}
-                  <DeleteButton
-                    onClick={() => handleOpenDeleteModal(result._id)}
-                  >
-                    <RiDeleteBinFill />
-                  </DeleteButton>
-                  {openDeleteModal && selectedItemId === result._id && (
-                    <DeleteModal
-                      id={result._id}
-                      handleCloseModal={handleCloseDeleteModal}
-                    />
-                  )}
+                  <ButtonsContainer>
+                    <EditButton onClick={() => handleOpenEditModal(result._id)}>
+                      <RiPencilFill />
+                    </EditButton>
+                    {openEditModal && selectedItemId === result._id && (
+                      <EditModal
+                        id={result._id}
+                        amount={result.amount}
+                        userId={result.userId}
+                        category={result.category}
+                        date={result.date}
+                        handleCloseModal={handleCloseEditModal}
+                      />
+                    )}
+                    <DeleteButton
+                      onClick={() => handleOpenDeleteModal(result._id)}
+                    >
+                      <RiDeleteBinFill />
+                    </DeleteButton>
+                    {openDeleteModal && selectedItemId === result._id && (
+                      <DeleteModal
+                        id={result._id}
+                        handleCloseModal={handleCloseDeleteModal}
+                      />
+                    )}
+                  </ButtonsContainer>
                 </ResultItem>
               ))}
             </ResultContainer>
@@ -157,7 +150,7 @@ function Search({ userId }: ISearchProps) {
 }
 
 const Container = styled.div`
-  max-width: 600px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 20px;
   display: flex;
@@ -179,7 +172,7 @@ const SearchContainer = styled.div`
 `;
 
 const SearchInput = styled.input`
-  width: 480px;
+  width: 800px;
   padding: 10px;
   border: 1px solid ${(props) => props.theme.borderColor};
   border-radius: 5px;
@@ -192,48 +185,59 @@ const SearchButton = styled(Button)`
 `;
 
 const ResultContainer = styled.div`
-  width: 480px;
+  width: 100%;
   border: 1px solid ${(props) => props.theme.borderColor};
-  border-radius: 5px;
+  border-radius: 8px;
   padding: 10px;
   margin-top: 20px;
+  flex-direction: column;
 `;
 
 const ResultHeader = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
   align-items: center;
-  margin-bottom: 10px;
+  padding: 10px 0;
   border-bottom: 1px solid ${(props) => props.theme.borderColor};
-  padding-bottom: 10px;
+  & > :first-child {
+    margin-left: 10px; /* 원하는 마진 값을 적용하세요 */
+  }
 `;
 
 const ResultHeaderText = styled.div`
-  flex: 1;
   font-weight: bold;
   text-align: left;
+  margin-bottom: 5px;
 `;
 
 const ResultItem = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto auto;
   align-items: center;
-  margin-bottom: 10px;
+  padding: 10px 0;
   border-bottom: 1px solid ${(props) => props.theme.borderColor};
-  padding-bottom: 10px;
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
 `;
 
 const Category = styled.div`
-  flex: 1;
+  margin-left: 10px;
   text-align: left;
 `;
 
 const Date = styled.div`
-  flex: 1;
   text-align: left;
 `;
 
 const Amount = styled.div`
-  flex: 1;
   text-align: left;
+`;
+
+const ButtonsContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
 `;
 
 const EditButton = styled.button`
@@ -250,6 +254,13 @@ const DeleteButton = styled.button`
   border: none;
   background-color: transparent;
   cursor: pointer;
+`;
+
+const NoResultText = styled.div`
+  text-align: center;
+  font-size: 18px;
+  margin-top: 20px;
+  color: #555; /* 원하는 색상으로 변경 가능 */
 `;
 
 export default Search;

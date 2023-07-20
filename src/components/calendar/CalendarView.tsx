@@ -4,12 +4,20 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { getCalendarConsume } from "../../lib/api/consumeAPI";
 import { totalAmount } from "./totalAmount";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { todayAtom } from "../../state/today";
+import {
+  openModalAtom,
+  openDeleteModalAtom,
+  openEditModalAtom,
+} from "../../state/modalClose";
 
 export function CalendarView() {
   const [monthlyCharge, setMonthlyCharge] = useState([]);
   const [today, setToday] = useRecoilState(todayAtom);
+  const addValue = useRecoilValue(openModalAtom);
+  const editValue = useRecoilValue(openEditModalAtom);
+  const deleteValue = useRecoilValue(openDeleteModalAtom);
   const navMonth = today.getMonth();
   const navYear = today.getFullYear();
 
@@ -29,7 +37,8 @@ export function CalendarView() {
       }
     };
     fetchData();
-  }, [navYear, navMonth]);
+  }, [navYear, navMonth, addValue, editValue, deleteValue]);
+
   return (
     <CalendarContainer>
       <Calendar
@@ -75,9 +84,8 @@ const CalendarContainer = styled.div`
     line-height: 1.4em;
   }
   .react-calendar__navigation button {
-    font-family: 'Pretendard-Regular', sans-serif;
-
-    color: #6f48eb;
+    font-family: "Pretendard-Regular", sans-serif;
+    color: #a55eea;
     min-width: 44px;
     background: none;
     font-size: 16px;
@@ -102,7 +110,7 @@ const CalendarContainer = styled.div`
     text-decoration: none;
   }
   .react-calendar__tile {
-    font-family: 'Pretendard-Regular', sans-serif;
+    font-family: "Pretendard-Regular", sans-serif;
 
     display: flex;
     flex-direction: column;
@@ -110,38 +118,38 @@ const CalendarContainer = styled.div`
     height: 4.5rem;
     gap: 6px;
     .posi {
-      color: #6f48eb;
+      color: #a55eea;
       opacity: 1;
     }
   }
   .react-calendar__month-view__days__day--weekend {
-    color: #6f48eb;
+    color: #a55eea;
   }
   .react-calendar__tile:enabled:hover,
   .react-calendar__tile:enabled:focus {
     background: ${(props) => props.theme.hoverColor};
-    color: #6f48eb;
+    color: #a55eea;
     border-radius: 6px;
   }
   .react-calendar__tile--now {
     background: #6f48eb33;
     border-radius: 6px;
     font-weight: bold;
-    color: #6f48eb;
+    color: #a55eea;
   }
   .react-calendar__tile--now:enabled:hover,
   .react-calendar__tile--now:enabled:focus {
     background: #6f48eb33;
     border-radius: 6px;
     font-weight: bold;
-    color: #6f48eb;
+    color: #a55eea;
   }
   .react-calendar__tile--hasActive:enabled:hover,
   .react-calendar__tile--hasActive:enabled:focus {
     background: #f8f8fa;
   }
   .react-calendar__tile--active {
-    background: #6f48eb;
+    background: #a55eea;
     border-radius: 6px;
     font-weight: bold;
     color: white;
@@ -151,7 +159,7 @@ const CalendarContainer = styled.div`
   }
   .react-calendar__tile--active:enabled:hover,
   .react-calendar__tile--active:enabled:focus {
-    background: #6f48eb;
+    background: #a55eea;
     color: white;
   }
   .react-calendar--selectRange .react-calendar__tile--hover {
