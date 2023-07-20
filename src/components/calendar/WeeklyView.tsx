@@ -5,7 +5,7 @@ import { styled } from "styled-components";
 import { todayAtom } from "../../state/today";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
-  OpenModalAtom,
+  openModalAtom,
   openDeleteModalAtom,
   openEditModalAtom,
 } from "../../state/modalClose";
@@ -13,7 +13,7 @@ import {
 export function WeeklyView() {
   const [thisMonthData, setThisMonthData] = useState([]);
   const [today, setToday] = useRecoilState(todayAtom);
-  const addValue = useRecoilValue(OpenModalAtom);
+  const addValue = useRecoilValue(openModalAtom);
   const editValue = useRecoilValue(openEditModalAtom);
   const deleteValue = useRecoilValue(openDeleteModalAtom);
   const [navMonth, setNavMonth] = useState<number>(today.getMonth() + 1);

@@ -1,17 +1,16 @@
 import styled from "styled-components";
 import CalendarSection from "./calendar/CalendarSection";
-import { useState } from "react";
 import AddModal from "./modal/AddModal";
 import Chart from "./chart/Chart";
 import Search from "./search/Search";
 import Today from "./today/Today";
 import ContainerBox from "./common/ContainerBox";
 import { useRecoilState } from "recoil";
-import { OpenModalAtom } from "../state/modalClose";
+import { openModalAtom } from "../state/modalClose";
 
 // Todo: Chart type 지정
 function Main() {
-  const [openModal, setOpenModal] = useRecoilState(OpenModalAtom);
+  const [openModal, setOpenModal] = useRecoilState(openModalAtom);
 
   const handleOpenModal = () => {
     setOpenModal(true);

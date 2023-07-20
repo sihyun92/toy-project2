@@ -7,9 +7,9 @@ import { RiDeleteBinFill, RiPencilFill } from "react-icons/ri";
 import EditModal from "../modal/EditModal";
 import DeleteModal from "../modal/DeleteModal";
 import {
-  OpenModalAtom,
   openDeleteModalAtom,
   openEditModalAtom,
+  openModalAtom,
 } from "../../state/modalClose";
 
 interface IExpense {
@@ -22,7 +22,9 @@ interface IExpense {
 
 export function Today() {
   const today = useRecoilValue(todayAtom);
-  const addValue = useRecoilValue(OpenModalAtom);
+  const addValue = useRecoilValue(openModalAtom);
+  const editValue = useRecoilValue(openEditModalAtom);
+  const deleteValue = useRecoilValue(openDeleteModalAtom);
   const [todayList, setTodayList] = useState([]);
   const [openEditModal, setOpenEditModal] = useRecoilState(openEditModalAtom);
   const [openDeleteModal, setOpenDeleteModal] =
@@ -47,15 +49,7 @@ export function Today() {
       }
     };
     fetchData();
-  }, [
-    openEditModal,
-    openDeleteModal,
-    addValue,
-    today,
-    nowDate,
-    nowMonth,
-    nowYear,
-  ]);
+  }, [editValue, deleteValue, addValue, today, nowDate, nowMonth, nowYear]);
 
   const handleCloseDeleteModal = () => {
     setOpenDeleteModal(false);
