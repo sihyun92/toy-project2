@@ -7,7 +7,7 @@ import { totalAmount } from "./totalAmount";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { todayAtom } from "../../state/today";
 import {
-  OpenModalAtom,
+  openModalAtom,
   openDeleteModalAtom,
   openEditModalAtom,
 } from "../../state/modalClose";
@@ -15,7 +15,7 @@ import {
 export function CalendarView() {
   const [monthlyCharge, setMonthlyCharge] = useState([]);
   const [today, setToday] = useRecoilState(todayAtom);
-  const addValue = useRecoilValue(OpenModalAtom);
+  const addValue = useRecoilValue(openModalAtom);
   const editValue = useRecoilValue(openEditModalAtom);
   const deleteValue = useRecoilValue(openDeleteModalAtom);
   const navMonth = today.getMonth();

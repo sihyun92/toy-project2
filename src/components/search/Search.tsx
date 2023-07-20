@@ -6,6 +6,12 @@ import { RiPencilFill, RiDeleteBinFill } from "react-icons/ri";
 import EditModal from "../modal/EditModal";
 import DeleteModal from "../modal/DeleteModal";
 import { formatDate } from "../../utils/util";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  openModalAtom,
+  openDeleteModalAtom,
+  openEditModalAtom,
+} from "../../state/modalClose";
 
 interface ISearchProps {
   userId: string;
@@ -19,11 +25,15 @@ interface ISearchResultProps {
 }
 
 function Search({ userId }: ISearchProps) {
+  const addValue = useRecoilValue(openModalAtom);
+  const editValue = useRecoilValue(openEditModalAtom);
+  const deleteValue = useRecoilValue(openDeleteModalAtom);
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState<ISearchResultProps[]>([]);
-  const [openEditModal, setOpenEditModal] = useState<boolean>(false);
-  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const [openEditModal, setOpenEditModal] = useRecoilState(openEditModalAtom);
+  const [openDeleteModal, setOpenDeleteModal] =
+    useRecoilState(openDeleteModalAtom);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,14 +53,11 @@ function Search({ userId }: ISearchProps) {
         console.log("Error occurred while searching:", error);
       }
     };
-    return () => {
-      fetchData();
-    };
-  }, [searchText, searchResults, userId]);
+    fetchData();
+  }, [searchText, userId, addValue, editValue, deleteValue]);
 
   const handleCloseDeleteModal = () => {
     setOpenDeleteModal(false);
-    setSearchResults((prevResults) => [...prevResults]);
   };
 
   const handleOpenDeleteModal = (_id: string) => {
@@ -65,7 +72,6 @@ function Search({ userId }: ISearchProps) {
 
   const handleCloseEditModal = () => {
     setOpenEditModal(false);
-    setSearchResults((prevResults) => [...prevResults]);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

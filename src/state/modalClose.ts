@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-export const OpenModalAtom = atom<boolean>({
+export const openModalAtom = atom<boolean>({
   key: "add",
   default: false,
 });
