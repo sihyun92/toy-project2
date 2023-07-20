@@ -13,12 +13,12 @@ function MonthlyChart({ id, totalAmount, type }: MonthlyChartProps) {
   return (
     <ApexCharts
       series={totalAmount}
-      type="donut"
+      type="bar"
       options={{
         labels: id,
         dataLabels: {
           enabled: true,
-          formatter: (val: number) => {
+          formatter: (val: string) => {
             return `${val.toLocaleString()}₩`;
           },
         },
