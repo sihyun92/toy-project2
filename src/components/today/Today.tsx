@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 import { getCalendarConsume } from "../../lib/api/consumeAPI";
 import { todayAtom } from "../../state/today";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { styled } from "styled-components";
 import { RiDeleteBinFill, RiPencilFill } from "react-icons/ri";
 import EditModal from "../modal/EditModal";
 import DeleteModal from "../modal/DeleteModal";
+import {
+  OpenModalAtom,
+  openDeleteModalAtom,
+  openEditModalAtom,
+} from "../../state/modalClose";
 
 interface IExpense {
   _id: string;
@@ -17,9 +22,11 @@ interface IExpense {
 
 export function Today() {
   const today = useRecoilValue(todayAtom);
+  const addValue = useRecoilValue(OpenModalAtom);
   const [todayList, setTodayList] = useState([]);
-  const [openEditModal, setOpenEditModal] = useState<boolean>(false);
-  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
+  const [openEditModal, setOpenEditModal] = useRecoilState(openEditModalAtom);
+  const [openDeleteModal, setOpenDeleteModal] =
+    useRecoilState(openDeleteModalAtom);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const nowMonth = today.getMonth();
   const nowYear = today.getFullYear();
@@ -40,26 +47,32 @@ export function Today() {
       }
     };
     fetchData();
-  }, [today, nowDate, nowMonth, nowYear]);
+  }, [
+    openEditModal,
+    openDeleteModal,
+    addValue,
+    today,
+    nowDate,
+    nowMonth,
+    nowYear,
+  ]);
 
   const handleCloseDeleteModal = () => {
     setOpenDeleteModal(false);
-    setTodayList((prevResults) => [...prevResults]);
   };
 
   const handleOpenDeleteModal = (_id: string) => {
-    setOpenDeleteModal(true);
     setSelectedItemId(_id);
+    setOpenDeleteModal(true);
   };
 
   const handleOpenEditModal = (_id: string) => {
-    setOpenEditModal(true);
     setSelectedItemId(_id);
+    setOpenEditModal(true);
   };
 
   const handleCloseEditModal = () => {
     setOpenEditModal(false);
-    setTodayList((prevResults) => [...prevResults]);
   };
 
   return (

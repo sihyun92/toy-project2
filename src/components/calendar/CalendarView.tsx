@@ -4,12 +4,20 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { getCalendarConsume } from "../../lib/api/consumeAPI";
 import { totalAmount } from "./totalAmount";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { todayAtom } from "../../state/today";
+import {
+  OpenModalAtom,
+  openDeleteModalAtom,
+  openEditModalAtom,
+} from "../../state/modalClose";
 
 export function CalendarView() {
   const [monthlyCharge, setMonthlyCharge] = useState([]);
   const [today, setToday] = useRecoilState(todayAtom);
+  const addValue = useRecoilValue(OpenModalAtom);
+  const editValue = useRecoilValue(openEditModalAtom);
+  const deleteValue = useRecoilValue(openDeleteModalAtom);
   const navMonth = today.getMonth();
   const navYear = today.getFullYear();
 
@@ -29,7 +37,8 @@ export function CalendarView() {
       }
     };
     fetchData();
-  }, [navYear, navMonth]);
+  }, [navYear, navMonth, addValue, editValue, deleteValue]);
+
   return (
     <CalendarContainer>
       <Calendar
