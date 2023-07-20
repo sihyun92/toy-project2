@@ -43,7 +43,9 @@ function Search({ userId }: ISearchProps) {
         console.log("Error occurred while searching:", error);
       }
     };
-    fetchData();
+    return () => {
+      fetchData();
+    };
   }, [searchText, searchResults, userId]);
 
   const handleCloseDeleteModal = () => {
@@ -137,7 +139,7 @@ function Search({ userId }: ISearchProps) {
 }
 
 const Container = styled.div`
-  max-width: 600px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 20px;
   display: flex;
@@ -159,7 +161,7 @@ const SearchContainer = styled.div`
 `;
 
 const SearchInput = styled.input`
-  width: 480px;
+  width: 800px;
   padding: 10px;
   border: 1px solid ${(props) => props.theme.borderColor};
   border-radius: 5px;
@@ -172,7 +174,7 @@ const SearchButton = styled(Button)`
 `;
 
 const ResultContainer = styled.div`
-  width: 480px;
+  width: 100%;
   border: 1px solid ${(props) => props.theme.borderColor};
   border-radius: 5px;
   padding: 10px;
