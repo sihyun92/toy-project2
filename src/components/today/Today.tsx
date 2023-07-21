@@ -42,8 +42,8 @@ export function Today() {
           month: nowMonth + 1,
           userId: "team1",
         });
-        const result = await fetchRes.data;
-        setTodayListData(await result);
+        const result = fetchRes.data;
+        setTodayListData(result);
         console.log("today 호출");
       } catch (error) {
         console.error(error);
@@ -87,7 +87,7 @@ export function Today() {
         {todayList === undefined ? (
           <div className="nodata">내역없음</div>
         ) : (
-          todayList.map((a: IExpense) => (
+          todayList.reverse().map((a: IExpense) => (
             <ListBox key={a._id}>
               <div>{a.category}</div>
               <IconBox>
