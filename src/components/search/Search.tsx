@@ -147,7 +147,7 @@ function Search({ userId }: ISearchProps) {
 }
 
 const Container = styled.div`
-  max-width: 100%;
+  width: 1008px;
   margin: 0 auto;
   padding: 20px;
   display: flex;
@@ -169,7 +169,7 @@ const SearchContainer = styled.div`
 `;
 
 const SearchInput = styled.input`
-  width: 800px;
+  width: 755px;
   padding: 10px;
   border: 1px solid ${(props) => props.theme.borderColor};
   border-radius: 5px;
@@ -256,8 +256,8 @@ const DeleteButton = styled.button`
 const NoResultText = styled.div`
   text-align: center;
   font-size: 18px;
-  margin-top: 20px;
-  color: #555; /* 원하는 색상으로 변경 가능 */
+  margin: 20px 20px;
+  color: ${(props) => props.theme.hoverColor};
 `;
 
 export default Search;
