@@ -57,14 +57,14 @@ interface IPutEditConsume {
   date: string;
 }
 
-export const putEditConsume = ({
+export const putEditConsume = async ({
   id,
   amount,
   userId,
   category,
   date,
 }: IPutEditConsume) => {
-  client.put(`/api/expenses/${id}`, { amount, userId, category, date });
+  await client.put(`/api/expenses/${id}`, { amount, userId, category, date });
 };
 
 // 소비 기록 삭제 API(DELETE)

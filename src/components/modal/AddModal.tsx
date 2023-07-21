@@ -4,7 +4,7 @@ import "react-calendar/dist/Calendar.css";
 import "react-time-picker/dist/TimePicker.css";
 import { postConsume } from "../../lib/api/consumeAPI";
 import { FiPlus, FiMinus, FiX } from "react-icons/fi";
-import moment from "moment"
+import moment from "moment";
 
 interface IAddModalProps {
   handleCloseModal: () => void;
@@ -46,7 +46,7 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
     setTimeValue(value);
   };
 
-  const handleConfirm = (event: any) => {
+  const handleConfirm = async (event: any) => {
     event.preventDefault();
     const date = moment(
       dateValue + (timeValue ? " " + timeValue : ""),
@@ -60,12 +60,13 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
       return;
     }
 
-    postConsume({
+    await postConsume({
       amount,
       userId,
       category,
       date,
     });
+
     handleCloseModal();
   };
 
