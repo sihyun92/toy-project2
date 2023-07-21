@@ -23,6 +23,7 @@ interface IExpense {
 export function Today() {
   const today = useRecoilValue(todayAtom);
   const addValue = useRecoilValue(openModalAtom);
+  const [todayListData, setTodayListData] = useState([]);
   const [todayList, setTodayList] = useState([]);
   const [openEditModal, setOpenEditModal] = useRecoilState(openEditModalAtom);
   const [openDeleteModal, setOpenDeleteModal] =
@@ -32,6 +33,7 @@ export function Today() {
   const nowYear = today.getFullYear();
   const nowDate = today.getDate();
 
+  //api 호출
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -40,22 +42,23 @@ export function Today() {
           month: nowMonth + 1,
           userId: "team1",
         });
-        const result = fetchRes.data;
-        setTodayList(result[Number(nowDate)]);
+        const result = await fetchRes.data;
+        setTodayListData(await result);
+        console.log("today 호출");
       } catch (error) {
         console.error(error);
       }
     };
-    setTimeout(() => fetchData(), 5);
-  }, [
-    openEditModal,
-    openDeleteModal,
-    addValue,
-    today,
-    nowDate,
-    nowMonth,
-    nowYear,
-  ]);
+    fetchData();
+    return () => {
+      fetchData();
+    };
+  }, [openEditModal, openDeleteModal, addValue, nowMonth, nowYear]);
+
+  //선택 일 변경시 호출된 데이터 안에서 date 조회
+  useEffect(() => {
+    setTodayList(todayListData[Number(nowDate)]);
+  }, [todayListData, nowDate]);
 
   const handleCloseDeleteModal = () => {
     setOpenDeleteModal(false);
@@ -89,9 +92,11 @@ export function Today() {
               <div>{a.category}</div>
               <IconBox>
                 {a.amount > 0 ? (
-                  <div className="posi mount">+{a.amount}원</div>
+                  <div className="posi mount">
+                    +{a.amount.toLocaleString()}원
+                  </div>
                 ) : (
-                  <div className="mount">{a.amount}원</div>
+                  <div className="mount">{a.amount.toLocaleString()}원</div>
                 )}
                 <EditButton onClick={() => handleOpenEditModal(a._id)}>
                   <RiPencilFill />
