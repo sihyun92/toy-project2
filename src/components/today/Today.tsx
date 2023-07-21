@@ -32,6 +32,11 @@ export function Today() {
   const nowMonth = today.getMonth();
   const nowYear = today.getFullYear();
   const nowDate = today.getDate();
+  const [prevNowDate, setPrevNowDate] = useState<number | null>(null);
+
+  useEffect(() => {
+    console.log("컴온", todayList);
+  }, [todayList]);
 
   //api 호출
   useEffect(() => {
@@ -44,20 +49,26 @@ export function Today() {
         });
         const result = fetchRes.data;
         setTodayListData(result);
-        console.log("today 호출");
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
-    return () => {
-      fetchData();
-    };
   }, [openEditModal, openDeleteModal, addValue, nowMonth, nowYear]);
 
-  //선택 일 변경시 호출된 데이터 안에서 date 조회
+  //선택 일 변경시 호출된 데이터 안에서 date 조회 후 reverse
   useEffect(() => {
-    setTodayList(todayListData[Number(nowDate)]);
+    const listData: [] =
+      todayListData[Number(nowDate)] !== undefined
+        ? todayListData[Number(nowDate)]
+        : [];
+    if (prevNowDate !== nowDate) {
+      setTodayList(listData);
+    }
+    setTodayList([...listData].reverse());
+    setPrevNowDate(nowDate);
+    return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [todayListData, nowDate]);
 
   const handleCloseDeleteModal = () => {
@@ -87,7 +98,7 @@ export function Today() {
         {todayList === undefined ? (
           <div className="nodata">내역없음</div>
         ) : (
-          todayList.reverse().map((a: IExpense) => (
+          todayList.map((a: IExpense) => (
             <ListBox key={a._id}>
               <div>{a.category}</div>
               <IconBox>
