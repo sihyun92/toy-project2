@@ -1,5 +1,5 @@
-import ErrorPage from "../src/pages/ErrorPage";
-import MainPage from "../src/pages/MainPage";
+import ErrorPage from "./pages/ErrorPage";
+import MainPage from "./pages/MainPage";
 import { Dispatch, SetStateAction, useCallback } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
