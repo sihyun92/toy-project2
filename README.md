@@ -31,16 +31,16 @@
   </tr>
  <tr>
     <td align="center">
-        <sub><b>소비내역 추가, 소비내역 차트</b><br></sub>
+        <sub><b>소비내역 월별 차트</b><br></sub>
     </td>
     <td align="center">
-        <sub><b>모달</b><br></sub>
+        <sub><b>소비내역 추가, 수정, 삭제 모달, 메인화면 레이아웃</b><br></sub>
     </td>
     <td align="center">
-        <sub><b>지출내역</b><br></sub>
+        <sub><b>소비내역 일별, 주간, 월별 캘린더</b><br></sub>
     </td>
      <td align="center">
-        <sub><b>소비내역 조회</b><br></sub>
+        <sub><b>소비내역 검색, 조회</b><br></sub>
     </td>
   </tr>
 
@@ -339,6 +339,7 @@ type ResponseValue = {
 <br />
 
 # 코드 컨벤션
+
 - 함수 컴포넌트는 <b>일반 함수</b>로 작성합니다.
 - 함수는 <b>화살표 함수</b>로 작성합니다.
 - 변수값은 <b>카멜케이스</b>를 사용합니다.
@@ -361,16 +362,16 @@ type ResponseValue = {
 
 # Commit
 
-Commit타입: :이모지: 내용 #이슈번호.  👉 ex) `feat: :sparkles: 로그인 API 추가 #1`
+Commit타입: :이모지: 내용 #이슈번호. 👉 ex) `feat: :sparkles: 로그인 API 추가 #1`
 
 커밋 내용은 한글로 작성!
 
-commit 종류 | 이모지 | commit type
--- | -- | --
-처음 구조 잡을 때 | `:tada:`  ⇒ 🎉 | init:
-새 기능 추가 | `:sparkles:` ⇒ ✨ | feat:
-버그를 고침 | `:bug:` ⇒ 🐛 | fix:
-기능 수정X, 위치 변경, 메소드 위치 변경 등… | `:hammer:` ⇒ 🔨 | refactor:
-문서를 수정 | `:books:` ⇒ 📚 | docs:
-코드를 정렬 | `:memo:` ⇒ 🗒️ | test:
-잡일 | `:wrench:` ⇒ 🛠️ | chore:
+| commit 종류                                 | 이모지            | commit type |
+| ------------------------------------------- | ----------------- | ----------- |
+| 처음 구조 잡을 때                           | `:tada:` ⇒ 🎉     | init:       |
+| 새 기능 추가                                | `:sparkles:` ⇒ ✨ | feat:       |
+| 버그를 고침                                 | `:bug:` ⇒ 🐛      | fix:        |
+| 기능 수정X, 위치 변경, 메소드 위치 변경 등… | `:hammer:` ⇒ 🔨   | refactor:   |
+| 문서를 수정                                 | `:books:` ⇒ 📚    | docs:       |
+| 코드를 정렬                                 | `:memo:` ⇒ 🗒️     | test:       |
+| 잡일                                        | `:wrench:` ⇒ 🛠️   | chore:      |
