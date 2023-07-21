@@ -12,6 +12,7 @@ const StyledContainerBox = styled.div`
   background: ${(props) => props.theme.containerBoxColor};
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
   border-radius: 14px;
+  height: fit-content;
 `;
 
 export default ContainerBox;
