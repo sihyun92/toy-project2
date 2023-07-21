@@ -99,7 +99,7 @@ function EditModal({
         <ModalContent>
           <ModalHeader>
             <ModalTitle>내역 수정</ModalTitle>
-            <ModalCloseButton>
+            <ModalCloseButton onClick={handleCloseModal}>
               <FiX />
             </ModalCloseButton>
           </ModalHeader>
