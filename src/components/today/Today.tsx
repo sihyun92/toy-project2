@@ -34,10 +34,6 @@ export function Today() {
   const nowDate = today.getDate();
   const [prevNowDate, setPrevNowDate] = useState<number | null>(null);
 
-  useEffect(() => {
-    console.log("컴온", todayList);
-  }, [todayList]);
-
   //api 호출
   useEffect(() => {
     const fetchData = async () => {
@@ -95,7 +91,7 @@ export function Today() {
         {nowMonth + 1}. {nowDate}
       </h1>
       <ListContainer>
-        {todayList === undefined ? (
+        {todayList.length === 0 ? (
           <div className="nodata">내역없음</div>
         ) : (
           todayList.map((a: IExpense) => (
