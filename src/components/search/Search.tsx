@@ -50,7 +50,7 @@ function Search({ userId }: ISearchProps) {
         console.log("Error occurred while searching:", error);
       }
     };
-    setTimeout(() => fetchData(), 5);
+    fetchData();
   }, [searchText, userId, addValue, openEditModal, openDeleteModal]);
 
   const handleCloseDeleteModal = () => {

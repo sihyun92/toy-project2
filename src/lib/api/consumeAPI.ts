@@ -13,13 +13,12 @@ export const postConsume = async ({
   category,
   date,
 }: IPostExpenses) => {
-  const result = await client.post("/api/expenses", {
+  await client.post("/api/expenses", {
     amount,
     userId,
     category,
     date,
   });
-  return result.data;
 };
 
 // 소비 품목 API(GET)
@@ -57,14 +56,14 @@ interface IPutEditConsume {
   date: string;
 }
 
-export const putEditConsume = ({
+export const putEditConsume = async ({
   id,
   amount,
   userId,
   category,
   date,
 }: IPutEditConsume) => {
-  client.put(`/api/expenses/${id}`, { amount, userId, category, date });
+  await client.put(`/api/expenses/${id}`, { amount, userId, category, date });
 };
 
 // 소비 기록 삭제 API(DELETE)
@@ -72,8 +71,7 @@ interface IDeleteConsume {
   id: string;
 }
 export const deleteConsume = async ({ id }: IDeleteConsume) => {
-  const result = await client.delete(`api/expenses/${id}`);
-  return result.data;
+  await client.delete(`api/expenses/${id}`);
 };
 
 // 소비 달력 호출 API(GET)
