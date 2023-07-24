@@ -23,6 +23,7 @@ interface IExpense {
 export function Today() {
   const today = useRecoilValue(todayAtom);
   const addValue = useRecoilValue(openModalAtom);
+  const [todayListData, setTodayListData] = useState([]);
   const [todayList, setTodayList] = useState([]);
   const [openEditModal, setOpenEditModal] = useRecoilState(openEditModalAtom);
   const [openDeleteModal, setOpenDeleteModal] =
@@ -31,7 +32,9 @@ export function Today() {
   const nowMonth = today.getMonth();
   const nowYear = today.getFullYear();
   const nowDate = today.getDate();
+  const [prevNowDate, setPrevNowDate] = useState<number | null>(null);
 
+  //api 호출
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -41,21 +44,28 @@ export function Today() {
           userId: "team1",
         });
         const result = fetchRes.data;
-        setTodayList(result[Number(nowDate)]);
+        setTodayListData(result);
       } catch (error) {
         console.error(error);
       }
     };
-    setTimeout(() => fetchData(), 5);
-  }, [
-    openEditModal,
-    openDeleteModal,
-    addValue,
-    today,
-    nowDate,
-    nowMonth,
-    nowYear,
-  ]);
+    fetchData();
+  }, [openEditModal, openDeleteModal, addValue, nowMonth, nowYear]);
+
+  //선택 일 변경시 호출된 데이터 안에서 date 조회 후 reverse
+  useEffect(() => {
+    const listData: [] =
+      todayListData[Number(nowDate)] !== undefined
+        ? todayListData[Number(nowDate)]
+        : [];
+    if (prevNowDate !== nowDate) {
+      setTodayList(listData);
+    }
+    setTodayList([...listData].reverse());
+    setPrevNowDate(nowDate);
+    return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [todayListData, nowDate]);
 
   const handleCloseDeleteModal = () => {
     setOpenDeleteModal(false);
@@ -81,7 +91,7 @@ export function Today() {
         {nowMonth + 1}. {nowDate}
       </h1>
       <ListContainer>
-        {todayList === undefined ? (
+        {todayList.length === 0 ? (
           <div className="nodata">내역없음</div>
         ) : (
           todayList.map((a: IExpense) => (
@@ -89,9 +99,11 @@ export function Today() {
               <div>{a.category}</div>
               <IconBox>
                 {a.amount > 0 ? (
-                  <div className="posi mount">+{a.amount}원</div>
+                  <div className="posi mount">
+                    +{a.amount.toLocaleString()}원
+                  </div>
                 ) : (
-                  <div className="mount">{a.amount}원</div>
+                  <div className="mount">{a.amount.toLocaleString()}원</div>
                 )}
                 <EditButton onClick={() => handleOpenEditModal(a._id)}>
                   <RiPencilFill />

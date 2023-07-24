@@ -10,14 +10,15 @@ interface IDeleteProps {
 }
 
 function DeleteModal({ id, handleCloseModal }: IDeleteProps) {
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     const deleteitem = {
       id: id,
     };
 
-    deleteConsume({
+    await deleteConsume({
       id: deleteitem.id,
     });
+
     handleCloseModal();
   };
 

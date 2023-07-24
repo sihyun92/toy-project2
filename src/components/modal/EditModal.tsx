@@ -62,7 +62,9 @@ function EditModal({
     }
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async (event: any) => {
+    event.preventDefault();
+
     const editedConsume = {
       id: id,
       amount: editAmount,
@@ -83,13 +85,14 @@ function EditModal({
       return;
     }
 
-    putEditConsume({
+    await putEditConsume({
       id: editedConsume.id,
       amount: editedConsume.amount,
       userId: editedConsume.userId,
       category: editedConsume.category,
       date: editedConsume.date,
     });
+
     handleCloseModal();
   };
 
