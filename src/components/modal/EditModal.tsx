@@ -132,6 +132,7 @@ function EditModal({
               onChange={handleChange}
               placeholder="이름"
               required
+              readOnly
             />
             <ModalInput
               type="text"

@@ -106,6 +106,7 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
               onChange={handleChange}
               placeholder="이름"
               required
+              readOnly
             />
             <ModalInput
               type="text"
