@@ -12,7 +12,7 @@ interface IAddModalProps {
 
 function AddModal({ handleCloseModal }: IAddModalProps) {
   const [amount, setAmount] = useState<number>(0);
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState("userId");
   const [category, setCategory] = useState("");
   const [dateValue, setDateValue] = useState<string>("");
   const [timeValue, setTimeValue] = useState<string>("");
