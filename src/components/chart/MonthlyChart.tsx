@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import ApexCharts from "react-apexcharts";
 import { getPeriodConsume } from "../../lib/api/consumeAPI";
 import { IExpense } from "./Chart";
+import styled, { useTheme } from "styled-components";
 
 // Component
 function MonthlyChart() {
+  const theme = useTheme();
   const [totalAmount, setTotalAmount] = useState<number[]>([]);
   const [id, setId] = useState<string[]>([]);
   useEffect(() => {
@@ -21,9 +23,10 @@ function MonthlyChart() {
     };
     fetchData();
   }, []);
+
   // Render
   return (
-    <ApexCharts
+    <CustomApexCharts
       series={totalAmount}
       type="donut"
       options={{
@@ -32,7 +35,12 @@ function MonthlyChart() {
           enabled: false,
         },
         title: {
-          text: '월별 차트',
+          text: "월별 차트",
+          style: {
+            color: theme.textColor,
+            fontSize: "18px",
+            fontWeight: "medium",
+          },
         },
       }}
     />
@@ -40,3 +48,9 @@ function MonthlyChart() {
 }
 
 export default MonthlyChart;
+
+const CustomApexCharts = styled(ApexCharts)`
+  .apexcharts-legend .apexcharts-legend-series .apexcharts-legend-text {
+    color: ${(props) => props.theme.textColor} !important;
+  }
+`;

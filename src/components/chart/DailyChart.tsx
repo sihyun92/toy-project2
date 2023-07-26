@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import ApexCharts from "react-apexcharts";
-import styled from "styled-components";
 import { getPeriodConsume } from "../../lib/api/consumeAPI";
 import { IExpense } from "./Chart";
+import styled, { useTheme } from "styled-components";
 
 // Component
 function DailyChart() {
+  const theme = useTheme();
   const [totalAmount, setTotalAmount] = useState<number[]>([]);
   const [id, setId] = useState<string[]>([]);
   useEffect(() => {
@@ -20,9 +21,10 @@ function DailyChart() {
     };
     fetchData();
   }, []);
+
   // Render
   return (
-    <StyledChart
+    <CustomApexCharts
       series={totalAmount}
       type="donut"
       options={{
@@ -32,6 +34,11 @@ function DailyChart() {
         },
         title: {
           text: "일별 차트",
+          style: {
+            color: theme.textColor,
+            fontSize: "18px",
+            fontWeight: "medium",
+          },
         },
         theme: {
           mode: "dark",
@@ -41,10 +48,10 @@ function DailyChart() {
   );
 }
 
-const StyledChart = styled(ApexCharts)`
-  span {
-    color: ${(props) => props.theme.textColor};
+export default DailyChart;
+
+const CustomApexCharts = styled(ApexCharts)`
+  .apexcharts-legend .apexcharts-legend-series .apexcharts-legend-text {
+    color: ${(props) => props.theme.textColor} !important;
   }
 `;
-
-export default DailyChart;
