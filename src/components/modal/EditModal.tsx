@@ -24,7 +24,7 @@ function EditModal({
   handleCloseModal,
 }: IEditModalProps) {
   const [editAmount, setEditAmount] = useState<number>(amount);
-  const [editUserId, setEditUserId] = useState<string>(userId);
+  const [editUserId, setEditUserId] = useState<string>("team1");
   const [editCategory, setEditCategory] = useState<string>(category);
   const [editDateValue, setEditDateValue] = useState<string>(
     date ? date.slice(0, 10) : "",
@@ -132,6 +132,7 @@ function EditModal({
               onChange={handleChange}
               placeholder="이름"
               required
+              readOnly
             />
             <ModalInput
               type="text"

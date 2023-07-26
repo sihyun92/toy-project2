@@ -12,7 +12,7 @@ interface IAddModalProps {
 
 function AddModal({ handleCloseModal }: IAddModalProps) {
   const [amount, setAmount] = useState<number>(0);
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState("team1");
   const [category, setCategory] = useState("");
   const [dateValue, setDateValue] = useState<string>("");
   const [timeValue, setTimeValue] = useState<string>("");
@@ -106,6 +106,7 @@ function AddModal({ handleCloseModal }: IAddModalProps) {
               onChange={handleChange}
               placeholder="이름"
               required
+              readOnly
             />
             <ModalInput
               type="text"
