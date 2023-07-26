@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ApexCharts from "react-apexcharts";
+import styled from "styled-components";
 import { getPeriodConsume } from "../../lib/api/consumeAPI";
 import { IExpense } from "./Chart";
 
@@ -21,7 +22,7 @@ function DailyChart() {
   }, []);
   // Render
   return (
-    <ApexCharts
+    <StyledChart
       series={totalAmount}
       type="donut"
       options={{
@@ -32,9 +33,18 @@ function DailyChart() {
         title: {
           text: "일별 차트",
         },
+        theme: {
+          mode: "dark",
+        },
       }}
     />
   );
 }
+
+const StyledChart = styled(ApexCharts)`
+  span {
+    color: ${(props) => props.theme.textColor};
+  }
+`;
 
 export default DailyChart;
