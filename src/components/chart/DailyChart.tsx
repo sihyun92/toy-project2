@@ -40,9 +40,6 @@ function DailyChart() {
             fontWeight: "medium",
           },
         },
-        theme: {
-          mode: "dark",
-        },
       }}
     />
   );
