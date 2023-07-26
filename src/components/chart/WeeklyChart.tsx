@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import ApexCharts from "react-apexcharts";
 import { getPeriodConsume } from "../../lib/api/consumeAPI";
 import { IExpense } from "./Chart";
+import styled, { useTheme } from "styled-components";
 
 // Component
 function WeeklyChart() {
+  const theme = useTheme();
   const [totalAmount, setTotalAmount] = useState<number[]>([]);
   const [id, setId] = useState<string[]>([]);
   useEffect(() => {
@@ -23,7 +25,7 @@ function WeeklyChart() {
   }, []);
   // Render
   return (
-    <ApexCharts
+    <CustomApexCharts
       series={totalAmount}
       type="donut"
       options={{
@@ -33,6 +35,11 @@ function WeeklyChart() {
         },
         title: {
           text: "주별 차트",
+          style: {
+            color: theme.textColor,
+            fontSize: "18px",
+            fontWeight: "medium",
+          },
         },
       }}
     />
@@ -40,3 +47,9 @@ function WeeklyChart() {
 }
 
 export default WeeklyChart;
+
+const CustomApexCharts = styled(ApexCharts)`
+  .apexcharts-legend .apexcharts-legend-series .apexcharts-legend-text {
+    color: ${(props) => props.theme.textColor} !important;
+  }
+`;
