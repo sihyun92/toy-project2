@@ -53,6 +53,7 @@ const ModalHeader = styled.div`
 const ModalTitle = styled.h1`
   width: 300px;
   font-size: 1.5rem;
+  color: #000;
 `;
 const ModalOverlay = styled.div`
   position: fixed;
@@ -60,7 +61,7 @@ const ModalOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 9999;
 `;
 
@@ -83,6 +84,8 @@ const ModalCloseButton = styled.button`
   top: -5px;
   right: -10px;
   font-size: 2rem;
+  background-color: rgba(0, 0, 0, 0);
+  color: #000;
 `;
 
 const ModalButtonContainer = styled.div`
@@ -93,6 +96,7 @@ const ModalButtonContainer = styled.div`
 
 const ModalButton = styled.button`
   margin-left: 10px;
+  background-color: rgba(0, 0, 0, 0);
+  color: #000;
 `;
-
 export default DeleteModal;
