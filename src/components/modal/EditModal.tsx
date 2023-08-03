@@ -35,17 +35,19 @@ function EditModal({
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target as HTMLInputElement;
-    if (name === "amount") {
-      if (!isNaN(Number(value))) {
-        setEditAmount(+value);
-      }
-    } else if (name === "userId") {
+    if (name === "amount" && !isNaN(Number(value))) {
+      setEditAmount(+value);
+    }
+    if (name === "userId") {
       setEditUserId(value);
-    } else if (name === "category") {
+    }
+    if (name === "category") {
       setEditCategory(value);
-    } else if (name === "date") {
+    }
+    if (name === "date") {
       setEditDateValue(value);
-    } else if (name === "time") {
+    }
+    if (name === "time") {
       setEditTimeValue(value);
     }
   };
@@ -187,7 +189,7 @@ const ModalOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 9999;
 `;
 
