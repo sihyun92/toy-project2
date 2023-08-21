@@ -1,15 +1,10 @@
 import Header from "../components/common/Header";
 import Main from "../components/Main";
 
-interface IMainPageProps {
-  isLight: boolean;
-  onToggleDark: () => void;
-}
-
-function MainPage({ isLight, onToggleDark }: IMainPageProps) {
+function MainPage() {
   return (
     <>
-      <Header isLight={isLight} onToggleDark={onToggleDark} />
+      <Header />
       <Main />
     </>
   );

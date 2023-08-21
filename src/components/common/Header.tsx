@@ -1,19 +1,19 @@
 import styled from "styled-components";
 import { IoMdSunny, IoMdMoon } from "react-icons/io";
+import { useRecoilState } from "recoil";
+import { themeState } from "../../state/themeState";
 
-interface IHeaderProps {
-  isLight: boolean;
-  onToggleDark: () => void;
-}
-
-function Header({ isLight, onToggleDark }: IHeaderProps) {
+function Header() {
+  const [theme, setTheme] = useRecoilState(themeState);
   return (
     <HeaderContainer>
       <HeaderContent>
         <HeaderTitle>Keep</HeaderTitle>
       </HeaderContent>
-      <HeaderToggleBtn onClick={onToggleDark}>
-        {isLight ? <IoMdSunny size={30} /> : <IoMdMoon size={30} />}
+      <HeaderToggleBtn
+        onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+      >
+        {theme === "light" ? <IoMdSunny size={30} /> : <IoMdMoon size={30} />}
       </HeaderToggleBtn>
     </HeaderContainer>
   );
