@@ -52,7 +52,7 @@ function Main() {
 
 const MainContainer = styled.div`
   width: 100%;
-  margin: 2rem 2rem;
+  margin: 2rem 0;
   padding: 0 20px;
   display: flex;
   flex-direction: column;
