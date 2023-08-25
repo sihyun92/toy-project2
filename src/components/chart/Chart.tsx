@@ -11,11 +11,12 @@ export interface IExpense {
 }
 
 const ChartTypes = ["daily", "weekly", "monthly"]; // 차트 유형 배열
+type ChartType = (typeof ChartTypes)[number];
 
 function Chart() {
-  const [activeChart, setActiveChart] = useState("daily"); // 현재 선택된 차트
+  const [activeChart, setActiveChart] = useState<ChartType>("daily"); // 현재 선택된 차트
 
-  const handleChangeChart = (newIndex: any) => {
+  const handleChangeChart = (newIndex: number) => {
     setActiveChart(ChartTypes[newIndex]);
   };
 
